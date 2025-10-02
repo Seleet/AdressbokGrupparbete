@@ -1,21 +1,20 @@
-Ett grupparbete i kursen C# Grund (Grupp 9).
+# Address Book App
 
+A group project in the C# Fundamentals course (Group 9).
 
-Funktioner:
+## Features
+- Add new contact  
+- Update existing contact  
+- Delete contact  
+- Search by name or city (supports partial matches)  
+- View all contacts  
+- Save contacts to text file  
 
-Lägga till ny kontakt
-Uppdatera befintlig kontakt
-Ta bort kontakt
-Söka på namn eller postort (även del av ord)
-Visa alla kontakter
-Spara kontakter i textfil
-
-
-Information som sparas
-
-Namn
-Gatuadress
-Postnummer
-Postort
-Telefon
-E-post
+## Information stored
+- First name  
+- Last name  
+- Street address  
+- Postal code  
+- City  
+- Phone number  
+- Email  
