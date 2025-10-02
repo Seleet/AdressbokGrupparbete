@@ -1,7 +1,10 @@
-﻿class Program
+﻿namespace AddressbookGroupProject
 {
-    static void Main()
+    class Program
     {
-
+        static void Main()
+        {
+            ConsoleMenu.Show();
+        }
     }
 }
