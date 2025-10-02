@@ -1,9 +1,9 @@
-namespace AddressbookGroupProject
+namespace AddressBookGroupProject
 {
     public class Contact
     {
-        public string FirstName { get; set; } = "";   // default empty string
-        public string LastName { get; set; } = "";    // default empty string
+        public string FirstName { get; set; } = "";   // = "" default empty string
+        public string LastName { get; set; } = "";   
         public string StreetAddress { get; set; } = "";
         public string PostalCode { get; set; } = "";
         public string City { get; set; } = "";

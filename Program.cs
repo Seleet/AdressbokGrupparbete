@@ -1,10 +1,14 @@
-﻿namespace AddressbookGroupProject
+﻿namespace AddressBookGroupProject
 {
     class Program
     {
         static void Main()
         {
-            ConsoleMenu.Show();
+            var addressBook = new AddressBook();
+
+            ConsoleMenu.Show(addressBook);
+
+
         }
     }
 }
