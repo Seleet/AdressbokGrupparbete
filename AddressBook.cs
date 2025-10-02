@@ -4,7 +4,6 @@ namespace AddressBookGroupProject
     {
         private readonly List<Contact> _contacts = new();
 
-        // --- Query ---
         public void ListAll()
         {
             if (_contacts.Count == 0)
@@ -27,7 +26,7 @@ namespace AddressBookGroupProject
             Console.WriteLine("[TODO] Search function");
         }
 
-        // --- Commands ---
+
         public void AddContact()
         {
             Console.Write("First name: ");
@@ -51,18 +50,10 @@ namespace AddressBookGroupProject
             Console.Write("Email: ");
             string email = Console.ReadLine() ?? "";
 
-            // skapa nytt Contact-objekt
-            var contact = new Contact
-            {
-                FirstName = firstName,
-                LastName = lastName,
-                StreetAddress = street,
-                PostalCode = postal,
-                City = city,
-                PhoneNumber = phone,
-                Email = email
-            };
+            var contact = new Contact(firstName, lastName, street, postal, city, phone, email);
+            _contacts.Add(contact);
 
+            Console.WriteLine("Contact added!");
             _contacts.Add(contact);
 
             Console.WriteLine("Contact added!");
