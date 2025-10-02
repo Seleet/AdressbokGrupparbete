@@ -7,8 +7,20 @@ namespace AddressBookGroupProject
         // --- Query ---
         public void ListAll()
         {
-            Console.WriteLine("[TODO] List all contacts");
+            if (_contacts.Count == 0)
+            {
+                Console.WriteLine("No contacts found.");
+                return;
+            }
+
+            Console.WriteLine("\n--- Contact List ---");
+            int i = 1;
+            foreach (var c in _contacts)
+            {
+                Console.WriteLine($"{i++}. {c.FirstName} {c.LastName}, {c.City} ({c.PhoneNumber})");
+            }
         }
+
 
         public void RunSearch()
         {
@@ -18,8 +30,44 @@ namespace AddressBookGroupProject
         // --- Commands ---
         public void AddContact()
         {
-            Console.WriteLine("[TODO] Add a contact");
+            Console.Write("First name: ");
+            string firstName = Console.ReadLine() ?? "";
+
+            Console.Write("Last name: ");
+            string lastName = Console.ReadLine() ?? "";
+
+            Console.Write("Street address: ");
+            string street = Console.ReadLine() ?? "";
+
+            Console.Write("Postal code: ");
+            string postal = Console.ReadLine() ?? "";
+
+            Console.Write("City: ");
+            string city = Console.ReadLine() ?? "";
+
+            Console.Write("Phone number: ");
+            string phone = Console.ReadLine() ?? "";
+
+            Console.Write("Email: ");
+            string email = Console.ReadLine() ?? "";
+
+            // skapa nytt Contact-objekt
+            var contact = new Contact
+            {
+                FirstName = firstName,
+                LastName = lastName,
+                StreetAddress = street,
+                PostalCode = postal,
+                City = city,
+                PhoneNumber = phone,
+                Email = email
+            };
+
+            _contacts.Add(contact);
+
+            Console.WriteLine("Contact added!");
         }
+
 
         public void UpdateContact()
         {
