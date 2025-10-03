@@ -5,11 +5,11 @@ namespace ContactManager.Models;
 
 class Program
 {
-    private static ContactController controller = new ContactController();
+    private static ContactController controller = new ContactController(); //Creates the controller
     static void Main()
     {
         bool quit = false;
-        controller.Load();
+        controller.Load(); //Loads th saved info from controller
 
         while (quit = true)
         {
@@ -113,11 +113,11 @@ class Program
                             }
                             Success();
                         }
-                        else if (myContactList.Count > 1)
+                        else if (myContactList.Count > 1) //If there is too many matches
                         {
                             Console.WriteLine("Too many matches, please try again");
                         }
-                        else
+                        else //If there is no matches
                         {
                             Console.WriteLine("You have no matches, please try again");
                         }
@@ -151,7 +151,7 @@ class Program
 
     }
 
-    private static void Success()
+    private static void Success() //Saves info in controller
     {
         Console.WriteLine("Saved");
         controller.Save();
