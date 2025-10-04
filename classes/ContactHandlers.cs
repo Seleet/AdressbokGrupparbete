@@ -1,87 +1,62 @@
 static class ContactHandlers
 {
-    static public void ListContacts()
+    static public void ListContacts(List<Contact> contactList)
     {
-        (bool b, List<Contact> contactList) = FileHandler.ReadContacts();
-        if (b)
-        {
-            LogAllContacts(contactList);
-        }
-        else
-        {
-            ShowErrorMsg();
-        }
+        LogAllContacts(contactList);
     }
 
-    static public void FindContacts()
+    static public void FindContacts(List<Contact> contactList)
     {
         string searchTerm = Helpers.PromptStringQuestion("Enter search phrase: ");
         searchTerm = searchTerm.ToLower();
-        (bool success, List<Contact> contactList) = FileHandler.ReadContacts();
 
-        if (success)
+        List<Contact> foundContact = contactList.Where(
+            c => c.Name.Contains(searchTerm) ||
+                 c.Street.Contains(searchTerm) ||
+                 c.ZipCode.Contains(searchTerm) ||
+                 c.City.Contains(searchTerm) ||
+                 c.Phone.ToString().Contains(searchTerm) ||
+                 c.Email.Contains(searchTerm)
+        ).ToList();
+
+        if (foundContact.Count == 0)
         {
-            List<Contact> foundContact = contactList.Where(
-                c => c.Name.Contains(searchTerm) ||
-                     c.Street.Contains(searchTerm) ||
-                     c.ZipCode.Contains(searchTerm) ||
-                     c.City.Contains(searchTerm) ||
-                     c.Phone.ToString().Contains(searchTerm) ||
-                     c.Email.Contains(searchTerm)
-            ).ToList();
-
-            if (foundContact.Count == 0)
-            {
-                Console.WriteLine("No search results.");
-            }
-            else
-            {
-                LogAllContacts(foundContact);
-            }
-
+            Console.WriteLine("No search results.");
         }
         else
         {
-            ShowErrorMsg();
+            LogAllContacts(foundContact);
         }
     }
 
-    static public void CreateContact()
+    static public void CreateContact(List<Contact> contactList)
     {
-        (bool success, List<Contact> contactList) = FileHandler.ReadContacts();
-        if (success)
-        {
-            long ID = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
-            string name = Helpers.PromptStringQuestion("Enter name: ");
-            string street = Helpers.PromptStringQuestion("Enter street: ");
-            string zipCode = Helpers.PromptStringQuestion("Enter zip code: ");
-            string city = Helpers.PromptStringQuestion("Enter city: ");
-            int phone = Helpers.PromptIntQuestion("Enter phone: ");
-            string email = Helpers.PromptStringQuestion("Enter email: ");
+        long ID = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+        string name = Helpers.PromptStringQuestion("Enter name: ");
+        string street = Helpers.PromptStringQuestion("Enter street: ");
+        string zipCode = Helpers.PromptStringQuestion("Enter zip code: ");
+        string city = Helpers.PromptStringQuestion("Enter city: ");
+        int phone = Helpers.PromptIntQuestion("Enter phone: ");
+        string email = Helpers.PromptStringQuestion("Enter email: ");
 
-            Contact newContact = new(ID, name.ToLower(), street.ToLower(), zipCode.ToUpper(), city.ToLower(), phone, email.ToLower());
+        Contact newContact = new(ID, name.ToLower(), street.ToLower(), zipCode.ToUpper(), city.ToLower(), phone, email.ToLower());
 
-            ContactSummary(newContact);
-            bool isCorrect = Helpers.PromptYesNoQuestion("Is this correct [y/n]?");
+        ContactSummary(newContact);
+        bool isCorrect = Helpers.PromptYesNoQuestion("Is this correct [y/n]?");
 
-            if (!isCorrect) newContact = EditField(newContact);
+        if (!isCorrect) newContact = EditField(newContact);
 
-            contactList.Add(newContact);
-            ConfirmAction("Contact created!");
-            FileHandler.Write(contactList);
-        }
-        else
-        {
-            ShowErrorMsg();
-        }
+        contactList.Add(newContact);
+        ConfirmAction("Contact created!");
+        FileHandler.Write(contactList);
 
     }
 
-    static public void UpdateContact()
+    static public void UpdateContact(List<Contact> contactList)
     {
-        (int contactIndex, List<Contact> contactList) = GetContactIndex();
+        bool id = GetContactIndex(contactList, out int contactIndex);
 
-        if (contactIndex != 9999)
+        if (id)
         {
             ContactSummary(contactList[contactIndex]);
             contactList[contactIndex] = EditField(contactList[contactIndex]);
@@ -91,10 +66,10 @@ static class ContactHandlers
         }
     }
 
-    static public void DeleteContact()
+    static public void DeleteContact(List<Contact> contactList)
     {
-        (int contactIndex, List<Contact> contactList) = GetContactIndex();
-        if (contactIndex != 9999)
+        bool id = GetContactIndex(contactList, out int contactIndex);
+        if (id)
         {
             ContactSummary(contactList[contactIndex]);
             bool isYes = Helpers.PromptYesNoQuestion($"Are you sure you want to delete {contactList[contactIndex].Name} from your contacts [y/n]? ");
@@ -112,35 +87,34 @@ static class ContactHandlers
 
     // ----------- UTILITY METHODS
 
-    static (int, List<Contact>) GetContactIndex()
+    static bool GetContactIndex(List<Contact> contactList, out int contactIndex)
     {
-        int contactIndex = 9999;
-        bool isLocatingContact = true;
+        contactIndex = -1;
 
-        (_, List<Contact> contactList) = FileHandler.ReadContacts();
         foreach (var contact in contactList)
         {
             Thread.Sleep(150);
             Console.WriteLine($"ID: {contact.ID} -- Name: {contact.Name}");
         }
 
-
-        while (isLocatingContact)
+        while (true)
         {
-            string contactId = Helpers.PromptStringQuestion("\nEnter ID of the contact you want to update: ");
-            if (!contactList.Any(c => c.ID.ToString() == contactId))
+            string input = Helpers.PromptStringQuestion("\nEnter ID of the contact you want to update: ");
+            if (long.TryParse(input, out _))
             {
-                bool isLong = long.TryParse(contactId, out _);
-                Console.WriteLine(isLong ? "\nContact not found." : "\nNot a valid ID.");
-                isLocatingContact = Helpers.PromptYesNoQuestion("Try again?");
+                contactIndex = contactList.FindIndex(c => c.ID.ToString() == input);
+                if (contactIndex != -1)
+                    return true;
+
+                Console.WriteLine("\nContact not found.");
             }
             else
             {
-                contactIndex = contactList.FindIndex(c => c.ID.ToString() == contactId);
-                isLocatingContact = false;
+                Console.WriteLine("\nNot a valid ID.");
             }
+
+            if (!Helpers.PromptYesNoQuestion("Try again [y/n]? ")) return false;
         }
-        return (contactIndex, contactList);
     }
 
     static Contact EditField(Contact c)
@@ -185,11 +159,6 @@ static class ContactHandlers
     {
         Thread.Sleep(300);
         Console.WriteLine(txt);
-    }
-
-    static void ShowErrorMsg()
-    {
-        Console.WriteLine($"Error reading text from textfile.");
     }
 
 }

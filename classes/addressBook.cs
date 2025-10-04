@@ -1,6 +1,7 @@
 class AddressBook
 {
     string[] options = ["List", "Create", "Update", "Delete", "Find", "Close"];
+    List<Contact> contactList = [];
 
     public AddressBook(string filePath)
     {
@@ -44,16 +45,19 @@ class AddressBook
 
     bool MeddlingKid(int num)
     {
+        (bool getContacts, contactList) = FileHandler.ReadContacts();
+        if (!getContacts) return false;
+
         if (options[num] != "Close") Console.WriteLine($" \n----- {options[num]} contact:");
         if (num >= 0 && num < options.Length && num != 5)
         {
             switch (num)
             {
-                case 0: ContactHandlers.ListContacts(); break;
-                case 1: ContactHandlers.CreateContact(); break;
-                case 2: ContactHandlers.UpdateContact(); break;
-                case 3: ContactHandlers.DeleteContact(); break;
-                case 4: ContactHandlers.FindContacts(); break;
+                case 0: ContactHandlers.ListContacts(contactList); break;
+                case 1: ContactHandlers.CreateContact(contactList); break;
+                case 2: ContactHandlers.UpdateContact(contactList); break;
+                case 3: ContactHandlers.DeleteContact(contactList); break;
+                case 4: ContactHandlers.FindContacts(contactList); break;
             }
             return Helpers.PromptYesNoQuestion("\nReturn to main menu [y/n]? ");
         }
@@ -65,17 +69,18 @@ class AddressBook
 
     void OpenCloseApp(bool open)
     {
-        string msg = open ? "Turning on" : "Turning off";
-        Thread.Sleep(200);
+        string msg = open ? "Booting...\n" : "\nTurning off...\n";
         Console.ForegroundColor = open ? ConsoleColor.Green : ConsoleColor.Yellow;
-        Console.WriteLine($"\n{msg} application");
+        WriteSlow(msg, 50);
         Console.ResetColor();
-        Thread.Sleep(200);
-        Console.WriteLine("...");
-        Thread.Sleep(200);
-        Console.WriteLine("..");
-        Thread.Sleep(200);
-        Console.WriteLine(".");
-        if (open) Thread.Sleep(200);
+        if (open) Thread.Sleep(150);
+    }
+    void WriteSlow(string txt, int time)
+    {
+        foreach (char c in txt)
+        {
+            Console.Write($"{c}");
+            Thread.Sleep(time);
+        }
     }
 }
