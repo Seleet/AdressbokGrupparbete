@@ -1,8 +1,9 @@
+using System;
+
 namespace AddressBookGroupProject
 {
     public class ConsoleMenu
     {
-        // Only static to make the app runnable
         public static void Show(AddressBook addressBook)
         {
             while (true)
@@ -19,13 +20,46 @@ namespace AddressBookGroupProject
 
                 switch (choice)
                 {
-                    case "1": addressBook.ListAll(); break;
-                    case "2": addressBook.RunSearch(); break;
-                    case "3": addressBook.AddContact(); break;
-                    case "4": addressBook.UpdateContact(); break;
-                    case "5": addressBook.DeleteContact(); break;
-                    case "0": return;
-                    default: Console.WriteLine("Invalid choice."); break;
+                    case "1":
+                        addressBook.ListAll();
+                        break;
+
+                    case "2":
+                        addressBook.RunSearch();
+                        break;
+
+                    case "3":
+                        var newContact = ConsoleUI.ReadContactFromConsole();
+                        addressBook.AddContact(newContact);
+                        break;
+
+                    case "4":
+                    {
+                        var idx = addressBook.PromptIndexOrCancel();
+                        if (idx < 0) break;
+
+                        var current = addressBook.GetByIndex(idx);
+                        if (current is null) { Console.WriteLine("Invalid index."); break; }
+
+                        var updated = ConsoleUI.ReadContactFromConsole(current);
+                        addressBook.UpdateContact(idx, updated);
+                        break;
+                    }
+
+                    case "5":
+                    {
+                        var idx = addressBook.PromptIndexOrCancel("Choose # to delete (or ENTER to cancel): ");
+                        if (idx < 0) break;
+                        addressBook.DeleteContact(idx);
+                        break;
+                    }
+
+                    case "0":
+                        return;
+
+                    default:
+                        Console.WriteLine("Invalid choice.");
+                        break;
                 }
             }
         }
