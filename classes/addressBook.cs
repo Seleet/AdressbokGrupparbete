@@ -2,7 +2,12 @@ class AddressBook
 {
     string[] options = ["List", "Create", "Update", "Delete", "Find", "Close"];
 
-    public void InitAddressBookApp()
+    public AddressBook(string filePath)
+    {
+        FileHandler.SetFilePath(filePath);
+    }
+
+    public void RunAddressBookApp()
     {
         bool openAddressBook = true;
         OpenCloseApp(true);
@@ -13,6 +18,10 @@ class AddressBook
         }
         OpenCloseApp(false);
     }
+
+    // Comment: Main menu loop out 'options array'. User pick an action between [1 - length of array]
+    //          PromptIntQuestion handles the verification logic, once a number is confirmed,
+    //          to match the index InputNum subtracts -1 and the method returns the index.
     public int MainMenu()
     {
         Console.WriteLine($"\n-- Choose an action by entering a number [1-{options.Length}]:");
@@ -22,16 +31,15 @@ class AddressBook
             Console.WriteLine($"{i + 1}. {options[i]} {msg}");
         }
 
-        int inputNum = Helpers.PromptIntQuestion("");
-        while (inputNum > options.Length)
+        int index = Helpers.PromptIntQuestion("");
+        while (index > options.Length)
         {
-            Console.WriteLine($"Not a valid number. Enter a number between [1-{options.Length}]:");
-            _ = int.TryParse(Console.ReadLine(), out inputNum);
+            index = Helpers.PromptIntQuestion($"Not a valid number. Enter a number between [1-{options.Length}]:");
         }
 
-        inputNum = inputNum - 1;
+        index--;
 
-        return inputNum;
+        return index;
     }
 
     bool MeddlingKid(int num)
@@ -55,19 +63,19 @@ class AddressBook
         }
     }
 
-    static void OpenCloseApp(bool open)
+    void OpenCloseApp(bool open)
     {
-        string msg = open ? "Opening" : "Closing";
+        string msg = open ? "Turning on" : "Turning off";
         Thread.Sleep(200);
-        Console.WriteLine(".");
-        Thread.Sleep(200);
-        Console.WriteLine("..");
+        Console.ForegroundColor = open ? ConsoleColor.Green : ConsoleColor.Yellow;
+        Console.WriteLine($"\n{msg} application");
+        Console.ResetColor();
         Thread.Sleep(200);
         Console.WriteLine("...");
         Thread.Sleep(200);
-        Console.ForegroundColor = open ? ConsoleColor.Green : ConsoleColor.Yellow;
-        Console.WriteLine($"{msg} application");
-        Console.ResetColor();
+        Console.WriteLine("..");
+        Thread.Sleep(200);
+        Console.WriteLine(".");
         if (open) Thread.Sleep(200);
     }
 }

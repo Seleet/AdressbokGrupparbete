@@ -1,4 +1,4 @@
-class ContactHandlers
+static class ContactHandlers
 {
     static public void ListContacts()
     {
@@ -9,13 +9,13 @@ class ContactHandlers
         }
         else
         {
-            ShowErrorMsg("read");
+            ShowErrorMsg();
         }
     }
 
     static public void FindContacts()
     {
-        string searchTerm = Helpers.PromptStringQuestion("Enter search prhase: ");
+        string searchTerm = Helpers.PromptStringQuestion("Enter search phrase: ");
         searchTerm = searchTerm.ToLower();
         (bool success, List<Contact> contactList) = FileHandler.ReadContacts();
 
@@ -42,32 +42,38 @@ class ContactHandlers
         }
         else
         {
-            ShowErrorMsg("read");
+            ShowErrorMsg();
         }
     }
 
     static public void CreateContact()
     {
-        (_, List<Contact> contactList) = FileHandler.ReadContacts();
+        (bool success, List<Contact> contactList) = FileHandler.ReadContacts();
+        if (success)
+        {
+            long ID = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+            string name = Helpers.PromptStringQuestion("Enter name: ");
+            string street = Helpers.PromptStringQuestion("Enter street: ");
+            string zipCode = Helpers.PromptStringQuestion("Enter zip code: ");
+            string city = Helpers.PromptStringQuestion("Enter city: ");
+            int phone = Helpers.PromptIntQuestion("Enter phone: ");
+            string email = Helpers.PromptStringQuestion("Enter email: ");
 
-        long ID = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
-        string name = Helpers.PromptStringQuestion("Enter name: ");
-        string street = Helpers.PromptStringQuestion("Enter street: ");
-        string zipCode = Helpers.PromptStringQuestion("Enter zip code: ");
-        string city = Helpers.PromptStringQuestion("Enter city: ");
-        int phone = Helpers.PromptIntQuestion("Enter phone: ");
-        string email = Helpers.PromptStringQuestion("Enter email: ");
+            Contact newContact = new(ID, name.ToLower(), street.ToLower(), zipCode.ToUpper(), city.ToLower(), phone, email.ToLower());
 
-        Contact newContact = new(ID, name.ToLower(), street.ToLower(), zipCode.ToUpper(), city.ToLower(), phone, email.ToLower());
+            ContactSummary(newContact);
+            bool isCorrect = Helpers.PromptYesNoQuestion("Is this correct [y/n]?");
 
-        ContactSummary(newContact);
-        bool isCorrect = Helpers.PromptYesNoQuestion("Is this correct [y/n]?");
+            if (!isCorrect) newContact = EditField(newContact);
 
-        if (!isCorrect) newContact = EditField(newContact);
-
-        contactList.Add(newContact);
-        LogAllContacts(contactList);
-        FileHandler.Write(contactList);
+            contactList.Add(newContact);
+            ConfirmAction("Contact created!");
+            FileHandler.Write(contactList);
+        }
+        else
+        {
+            ShowErrorMsg();
+        }
 
     }
 
@@ -79,8 +85,8 @@ class ContactHandlers
         {
             ContactSummary(contactList[contactIndex]);
             contactList[contactIndex] = EditField(contactList[contactIndex]);
-            Thread.Sleep(300);
-            Console.WriteLine("Contact updated!");
+
+            ConfirmAction("Contact updated!");
             FileHandler.Write(contactList);
         }
     }
@@ -97,8 +103,7 @@ class ContactHandlers
                 bool isDeleted = contactList.Remove(contactList[contactIndex]);
                 if (isDeleted)
                 {
-                    Thread.Sleep(300);
-                    Console.WriteLine("Contact removed!");
+                    ConfirmAction("Contact removed!");
                 }
                 FileHandler.Write(contactList);
             }
@@ -147,12 +152,12 @@ class ContactHandlers
 
             switch (correctField.ToLower())
             {
-                case "name": c.Name = Helpers.PromptStringQuestion("Enter name: "); break;
-                case "address": c.Street = Helpers.PromptStringQuestion("Enter street: "); break;
+                case "name": c.Name = Helpers.PromptStringQuestion("Enter name: ").ToLower(); break;
+                case "address": c.Street = Helpers.PromptStringQuestion("Enter street: ").ToLower(); break;
                 case "zip code": c.ZipCode = Helpers.PromptStringQuestion("Enter zip code: ").ToUpper(); break;
-                case "city": c.City = Helpers.PromptStringQuestion("Enter city: ").ToUpper(); break;
+                case "city": c.City = Helpers.PromptStringQuestion("Enter city: ").ToLower(); break;
                 case "phone": c.Phone = Helpers.PromptIntQuestion("Enter phone: "); break;
-                case "email": c.Email = Helpers.PromptStringQuestion("Enter email: "); break;
+                case "email": c.Email = Helpers.PromptStringQuestion("Enter email: ").ToLower(); break;
                 default: Console.WriteLine("Invalid option"); break;
             }
             ContactSummary(c);
@@ -164,7 +169,7 @@ class ContactHandlers
     static void ContactSummary(Contact c)
     {
         Console.ForegroundColor = ConsoleColor.Yellow;
-        Console.WriteLine($"Contact info -- ID: {c.ID}, Name: {c.Name}, Street: {c.Street}, Zip Code: {c.ZipCode}, City: {c.City}, Phone: {c.Phone}, Email: {c.Email}\n");
+        Console.WriteLine($"Contact info -- ID: {c.ID}, Name: {c.Name}, Street: {c.Street}, Zip Code: {c.ZipCode}, City: {c.City}, Phone: {c.Phone}, Email: {c.Email}");
         Console.ResetColor();
     }
 
@@ -172,13 +177,19 @@ class ContactHandlers
     {
         foreach (var c in contactList)
         {
-            Console.WriteLine($"ID: {c.ID}, Name: {c.Name}, Address: {c.Street}, Zip Code: {c.ZipCode}, City: {c.City}, Phone: {c.Phone}, Email: {c.Email}");
+            ContactSummary(c);
         }
     }
 
-    private static void ShowErrorMsg(string v) // Am I gonna do anything with this or not
+    static void ConfirmAction(string txt)
     {
-        Console.WriteLine($"Couldn't {v} contacts");
+        Thread.Sleep(300);
+        Console.WriteLine(txt);
+    }
+
+    static void ShowErrorMsg()
+    {
+        Console.WriteLine($"Error reading text from textfile.");
     }
 
 }

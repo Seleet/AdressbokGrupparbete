@@ -1,7 +1,10 @@
 static class FileHandler
 {
-    static private string fileName = @"E:\dotnet\contactlist\contactlist.txt";
-
+    static public string fileName = "";
+    static public void SetFilePath(string path)
+    {
+        fileName = @path;
+    }
     static public (bool success, List<Contact> contacts) ReadContacts()
     {
         List<Contact> list = new();
