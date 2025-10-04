@@ -20,9 +20,7 @@ class AddressBook
         OpenCloseApp(false);
     }
 
-    // Comment: Main menu loop out 'options array'. User pick an action between [1 - length of array]
-    //          PromptIntQuestion handles the verification logic, once a number is confirmed,
-    //          to match the index InputNum subtracts -1 and the method returns the index.
+    // A Method that prints a Menu, prompts and reads an index, then subtracts to match right index in Options Arr and returns corrected index.
     public int MainMenu()
     {
         Console.WriteLine($"\n-- Choose an action by entering a number [1-{options.Length}]:");
@@ -43,15 +41,16 @@ class AddressBook
         return index;
     }
 
-    bool MeddlingKid(int num)
+    // Midware Method that takes in an index parameter. It loads contacts from textfile, in which index triggers referenced action.
+    bool MeddlingKid(int i)
     {
         (bool getContacts, contactList) = FileHandler.ReadContacts();
         if (!getContacts) return false;
 
-        if (options[num] != "Close") Console.WriteLine($" \n----- {options[num]} contact:");
-        if (num >= 0 && num < options.Length && num != 5)
+        if (options[i] != "Close") Console.WriteLine($" \n----- {options[i]} contact:");
+        if (i >= 0 && i < options.Length && i != 5)
         {
-            switch (num)
+            switch (i)
             {
                 case 0: ContactHandlers.ListContacts(contactList); break;
                 case 1: ContactHandlers.CreateContact(contactList); break;
@@ -67,6 +66,7 @@ class AddressBook
         }
     }
 
+    // Method to visually simulate the app booting and shutting down.
     void OpenCloseApp(bool open)
     {
         string msg = open ? "Booting...\n" : "\nTurning off...\n";
