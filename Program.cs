@@ -2,8 +2,8 @@
 {
     static void Main()
     {
-        AddressBook addressBook = new();
+        AddressBook addressbook = new();
 
-        addressBook.InitInstructions();
+        addressbook.InitAddressBookApp();
     }
 }
