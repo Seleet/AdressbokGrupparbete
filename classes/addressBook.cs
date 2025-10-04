@@ -71,16 +71,8 @@ class AddressBook
     {
         string msg = open ? "Booting...\n" : "\nTurning off...\n";
         Console.ForegroundColor = open ? ConsoleColor.Green : ConsoleColor.Yellow;
-        WriteSlow(msg, 50);
+        Helpers.WriteSlow(msg, 50);
         Console.ResetColor();
         if (open) Thread.Sleep(150);
-    }
-    void WriteSlow(string txt, int time)
-    {
-        foreach (char c in txt)
-        {
-            Console.Write($"{c}");
-            Thread.Sleep(time);
-        }
     }
 }

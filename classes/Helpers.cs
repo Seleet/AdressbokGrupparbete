@@ -40,4 +40,13 @@ static class Helpers
         }
         return num;
     }
+
+    static public void WriteSlow(string txt, int time)
+    {
+        foreach (char c in txt)
+        {
+            Console.Write($"{c}");
+            Thread.Sleep(time);
+        }
+    }
 }
