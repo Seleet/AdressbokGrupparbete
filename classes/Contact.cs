@@ -6,7 +6,6 @@ class Contact
     public string City;
     public int Phone;
     public string Email;
-
     public long ID;
 
     public Contact(long _num, string _name, string _street, string _zipCode, string _city,
