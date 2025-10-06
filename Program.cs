@@ -9,22 +9,22 @@ class Program
     static void Main()
     {
         bool quit = false;
-        controller.Load(); //Loads th saved info from controller
+        controller.Load(); //Loads the saved info from controller
 
         while (quit = true)
         {
-            Console.WriteLine("Welcome to your address book\nPlease select one off the following\n\n1 for add contact\n2 for edit contact\n3 for contact register\n4 for search\n5 for quit");
+            Console.WriteLine("Welcome to your address book\nPlease select one of the following\n\n1 for add contact\n2 for edit contact\n3 for contact register\n4 for search\n5 for quit\n");
             string awnser = (Console.ReadLine().ToLower());
-
+            
             switch (awnser)
             {
-                case "5": //Finnishing the program 
+                case "5": //Finishing the program
                     {
                         Console.WriteLine("Quitting program");
                         System.Environment.Exit(0);
                         break;
                     }
-                case "1": //Add a contact to list
+                case "1": //Add a contact to the list
                     {
                         Console.WriteLine("Enter first name");
                         string firstName = Console.ReadLine();
@@ -36,30 +36,29 @@ class Program
                         string postalCode = Console.ReadLine();
                         Console.WriteLine("Enter city");
                         string city = Console.ReadLine();
-                        Console.WriteLine("Enter phonenumber");
+                        Console.WriteLine("Enter phone number");
                         string phonenumber = Console.ReadLine();
                         Console.WriteLine("Enter email");
                         string emailAddress = Console.ReadLine();
 
 
-
+                        // Controller saves in the repository
                         controller.Add( firstName,  lastName,  streetAddress,  postalCode,  city, emailAddress,  phonenumber);
-                        controller.Save();
                         Success();
                         break;
                              
                     }
 
-                case "2": //Editt the contact list
+                case "2": //Edit the contact list
                     {
-                        Console.WriteLine("What contact do you want to edit?");
+                        Console.WriteLine("Which contact do you want to edit?");
                         List<Models.Contact> myContactList = SearchForPerson();
                         if (myContactList.Count == 1)
                         {
                             Console.WriteLine("Wich field do you want to edit or delete?\nTo delete enter 1\n\nTo edit field enter\n2 for Firs name\n3 for last name\n4 for street address\n5 for city\n6 for email address\n7 for phone number\n");
                             string myAwnser = Console.ReadLine().ToLower();
 
-                            Contact myContact = myContactList[0];
+                            Contact myContact = myContactList[0]; //first element in list
 
                             switch (myAwnser)
                             {
@@ -69,6 +68,7 @@ class Program
                                         myContact.FirstName = Console.ReadLine();
                                         break;
                                     }
+                                    
                                 case ("3"):
                                     {
                                         Console.WriteLine("Enter last name");
@@ -102,45 +102,45 @@ class Program
                                 case "1":
                                     {
                                         controller.Delete(myContact);
-                                        Console.WriteLine("Contact deleated");
+                                        Console.WriteLine("Contact deleted");
                                         break;
                                     }
                                 default:
                                     {
-                                        Console.WriteLine("Unvalid field");
+                                        Console.WriteLine("Invalid field");
                                         break;
                                     }
                             }
                             Success();
                         }
-                        else if (myContactList.Count > 1) //If there is too many matches
+                        else if (myContactList.Count > 1) //If there are too many matches
                         {
                             Console.WriteLine("Too many matches, please try again");
                         }
-                        else //If there is no matches
+                        else //If there are no matches
                         {
                             Console.WriteLine("You have no matches, please try again");
                         }
-                            break;
+                        break;
                     }
                 case "3": //See the contact register
                     {
-                        foreach (var contact in controller.GetAll())
+                        foreach (var contact in controller.GetAll()) //Controller returns a compleate list of all objects 
                             Console.WriteLine(contact);
                         break;
                     }
-                case "4": //Serch after person mabye incorperated in the contact list register?
+                case "4": //Search for a person
                     {
                         Console.WriteLine("Who are you searching for?");
-                        List<Models.Contact> myContactList = SearchForPerson();
+                        List <Models.Contact> myContactList = SearchForPerson(); //Use controller search
 
-                        foreach (var contact in myContactList)
+                        foreach (var contact in myContactList) //
                             Console.WriteLine(contact);
 
 
                         break;
                     }
-                default: //Exeption
+                default: //Exception
                     {
                         Console.WriteLine("Cannot read command, please try again");
                         break;
@@ -151,13 +151,13 @@ class Program
 
     }
 
-    private static void Success() //Saves info in controller
+    private static void Success() //Saves info via controller
     {
         Console.WriteLine("Saved");
         controller.Save();
     }
 
-    private static List<Models.Contact> SearchForPerson()
+    private static List<Models.Contact> SearchForPerson() //Search for person via controller
     {
         string searchTerm = Console.ReadLine();
         List<Models.Contact> myContactList = controller.Search(searchTerm);

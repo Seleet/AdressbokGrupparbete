@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ContactManager.Models
+namespace ContactManager.Models 
 {
     public class Contact
     {
@@ -17,6 +17,6 @@ namespace ContactManager.Models
         public string EmailAddress { get; set; }
        
 
-        public override string ToString() => $"{FirstName} {LastName}, lives at {StreetAddress} {PostalCode} {City}\nPhone Number:{PhoneNumber}\nEmail Address:{EmailAddress}";
+        public override string ToString() => $"{FirstName} {LastName}, lives at {StreetAddress} {PostalCode} {City}\nPhone Number:{PhoneNumber}\nEmail Address:{EmailAddress}"; //Override replaces the base class method
     }
 }

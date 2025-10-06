@@ -9,7 +9,7 @@ using ContactManager.Models;
 
 namespace ContactManager.Controllers
 { 
-    public class ContactController
+    public class ContactController //Handles contact management operations and acts as a bridge between the application and the repository.
     {
         private ContactRepository repo = new ContactRepository();
 
@@ -20,6 +20,7 @@ namespace ContactManager.Controllers
         public List<Models.Contact> Search(string keyword) => repo.Search(keyword);
         public void Save() => repo.SaveToFile();
         public void Load() => repo.LoadFromFile();
+
         public void Update(string originalName, string newFirstName, string newLastName, string newStreetAddress, string newPostalCode,string newCity, string newPhoneNumber, string newEmailAddress)
         {
             var contact = repo.GetAll().FirstOrDefault(a => a.FirstName.Equals(originalName, StringComparison.OrdinalIgnoreCase));
