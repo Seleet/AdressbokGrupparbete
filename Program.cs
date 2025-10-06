@@ -1,14 +1,11 @@
-﻿namespace AddressBookGroupProject
+﻿
+class Program
 {
-    class Program
+    static void Main()
     {
-        static void Main()
-        {
-            var addressBook = new AddressBook();
+        AddressBook addressbook = new("E:\\dotnet\\contactlist\\contactlist.txt");
 
-            ConsoleMenu.Show(addressBook);
+        addressbook.RunAddressBookApp();
 
-
-        }
     }
 }
