@@ -12,6 +12,7 @@ class AddressBook
     {
         bool openAddressBook = true;
         OpenCloseApp(true);
+
         while (openAddressBook)
         {
             int choice = MainMenu();
