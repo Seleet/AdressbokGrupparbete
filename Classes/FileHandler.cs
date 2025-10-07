@@ -30,7 +30,7 @@ static class FileHandler
                     if (string.IsNullOrWhiteSpace(line)) continue;
                     // Protection against broken files
                     var parts = line.Split(',');
-                    if (parts.Length < 7) continue;
+                    if (parts.Length < 8) continue;
                     ConvertToListItem(list, line);
                 }
                 return (true, list);
@@ -47,7 +47,7 @@ static class FileHandler
     {
         var parts = listItem.Split(',');
         Contact person = new(
-            long.Parse(parts[0]), parts[1], parts[2], parts[3], parts[4], int.Parse(parts[5]), parts[6]
+            long.Parse(parts[0]), parts[1], parts[2], parts[3], parts[4], (parts[5]), parts[6], parts[7]
         );
         list.Add(person);
         return list;
@@ -68,7 +68,8 @@ static class FileHandler
             {
                 foreach (var item in list)
                 {
-                    writer.WriteLine($"{item.ID},{item.Name},{item.Street},{item.ZipCode},{item.City},{item.Phone},{item.Email}");
+                  writer.WriteLine($"{item.ID},{item.FirstName},{item.LastName},{item.Street},{item.ZipCode},{item.City},{item.Phone},{item.Email}");
+
                 }
                 return true;
             }
