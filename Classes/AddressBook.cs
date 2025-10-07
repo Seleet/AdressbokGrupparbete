@@ -52,12 +52,10 @@ class AddressBook
 
     bool MeddlingKid(int num)
     {
-        // ======================================
-        // FIX (Martin, 2025-10-07):
-        // Issue: App previously shut down immediately when reading contacts failed.
-        // Cause: ReadContacts() returned false when file didn't exist.
-        // Solution: Print message and continue with an empty contact list instead.
-        // ======================================
+        // NOTE (Martin, 2025-10-07):
+        // File creation is now handled in Program.cs, so this block is unlikely to run.
+        // Left in place as a safeguard.
+
         (bool getContacts, contactList) = FileHandler.ReadContacts();
         if (!getContacts)
         {

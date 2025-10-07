@@ -11,11 +11,10 @@ static class FileHandler
         List<Contact> list = new();
         try
         {
-            // ======================================
             // FIX (Martin, 2025-10-07):
-            // Issue: Missing file caused FileNotFoundException.
-            // Solution: Create directory and empty file if missing, return empty list.
-            // ======================================
+            // File error handled in Program.cs – this remains as a safety check.
+
+
             if (!File.Exists(fileName))
             {
                 Directory.CreateDirectory(Path.GetDirectoryName(fileName)!);

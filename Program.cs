@@ -11,12 +11,12 @@
 
 
         // Get the user's platform-specific ApplicationData folder (AppData on Windows, Library/Application Support on macOS, .config on Linux)
-        // and combine it with the subfolder "AddressBookApp" to create the app's data directory path.
+        // and combine it with the subfolder "AddressBookApp" to create the app's data directory path.(Martin)
         var appDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "AddressBookApp");
 
 
 
-        Directory.CreateDirectory(appDir);  // Ensure the directory exists (no-op if already present).
+        Directory.CreateDirectory(appDir);  // Ensure the directory exists (no-op if already present)(Martin).
         var file = Path.Combine(appDir, "contacts.csv");
 
         AddressBook addressbook = new(file);
