@@ -140,11 +140,10 @@ static class ContactHandlers
         return c;
     }
 
-    static void ContactSummary(Contact c)
+    static void ContactSummary(Contact c) //The responsibility of writing out the content lies in the class (More object oriented), Elise
     {
         Console.ForegroundColor = ConsoleColor.Yellow;
         Console.WriteLine(c);
-       // Console.WriteLine($"Contact info -- ID: {c.ID}, Name: {c.Name}, Street: {c.Street}, Zip Code: {c.ZipCode}, City: {c.City}, Phone: {c.Phone}, Email: {c.Email}");
         Console.ResetColor();
     }
 
