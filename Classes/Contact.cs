@@ -20,4 +20,10 @@ class Contact
         Email = _email;
     }
 
+    public override string ToString()
+    {
+        return $"Contact info -- ID: {this.ID}, Name: {this.Name}, Street: {this.Street}, Zip Code: {this.ZipCode}, City: {this.City}, Phone: {this.Phone}, Email: {this.Email}";
+    }
+
 }
+

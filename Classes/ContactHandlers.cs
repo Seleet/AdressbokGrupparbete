@@ -143,7 +143,8 @@ static class ContactHandlers
     static void ContactSummary(Contact c)
     {
         Console.ForegroundColor = ConsoleColor.Yellow;
-        Console.WriteLine($"Contact info -- ID: {c.ID}, Name: {c.Name}, Street: {c.Street}, Zip Code: {c.ZipCode}, City: {c.City}, Phone: {c.Phone}, Email: {c.Email}");
+        Console.WriteLine(c);
+       // Console.WriteLine($"Contact info -- ID: {c.ID}, Name: {c.Name}, Street: {c.Street}, Zip Code: {c.ZipCode}, City: {c.City}, Phone: {c.Phone}, Email: {c.Email}");
         Console.ResetColor();
     }
 
