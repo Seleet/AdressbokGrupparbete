@@ -2,7 +2,7 @@
 {
     static void Main()
     {
-        AddressBook addressbook = new("E:\\dotnet\\contactlist\\contactlist.txt");
+        AddressBook addressbook = new("contactlist.txt");
 
         addressbook.RunAddressBookApp();
 

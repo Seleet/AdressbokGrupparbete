@@ -1,3 +1,5 @@
+using System.IO;
+
 static class FileHandler
 {
     static public string fileName = "";
@@ -10,6 +12,13 @@ static class FileHandler
         List<Contact> list = new();
         try
         {
+            if (!File.Exists(fileName)) //Creates a new file if the file path can´t be found, Elise
+            {
+                using (FileStream fs = File.Create(fileName))
+                {
+                fs.Close();
+                }
+            }
             using (StreamReader reader = new(fileName))
             {
                 string? line;
