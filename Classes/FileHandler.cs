@@ -5,16 +5,33 @@ static class FileHandler
     {
         fileName = @path;
     }
+
     static public (bool success, List<Contact> contacts) ReadContacts()
     {
         List<Contact> list = new();
         try
         {
+            // ======================================
+            // FIX (Martin, 2025-10-07):
+            // Issue: Missing file caused FileNotFoundException.
+            // Solution: Create directory and empty file if missing, return empty list.
+            // ======================================
+            if (!File.Exists(fileName))
+            {
+                Directory.CreateDirectory(Path.GetDirectoryName(fileName)!);
+                using var _ = File.Create(fileName);
+                return (true, list);
+            }
+
             using (StreamReader reader = new(fileName))
             {
                 string? line;
                 while ((line = reader.ReadLine()) != null)
                 {
+                    if (string.IsNullOrWhiteSpace(line)) continue;
+                    // Protection against broken files
+                    var parts = line.Split(',');
+                    if (parts.Length < 7) continue;
                     ConvertToListItem(list, line);
                 }
                 return (true, list);
@@ -42,6 +59,12 @@ static class FileHandler
     {
         try
         {
+            // ======================================
+            // FIX (Martin, 2025-10-07):
+            // Issue: App crashed when directory didn't exist.
+            // Solution: Ensure directory exists before writing.
+            // ======================================
+            Directory.CreateDirectory(Path.GetDirectoryName(fileName)!);
             using (StreamWriter writer = new(fileName))
             {
                 foreach (var item in list)

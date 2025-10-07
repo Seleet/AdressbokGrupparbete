@@ -1,5 +1,11 @@
+/// <summary>
+/// Represents the main AddressBook application.
+/// Handles the program flow, main menu, and links user choices to the correct contact operations.
+/// </summary>
+
 class AddressBook
 {
+
     string[] options = ["List", "Create", "Update", "Delete", "Find", "Close"];
     List<Contact> contactList = [];
 
@@ -46,9 +52,20 @@ class AddressBook
 
     bool MeddlingKid(int num)
     {
+        // ======================================
+        // FIX (Martin, 2025-10-07):
+        // Issue: App previously shut down immediately when reading contacts failed.
+        // Cause: ReadContacts() returned false when file didn't exist.
+        // Solution: Print message and continue with an empty contact list instead.
+        // ======================================
         (bool getContacts, contactList) = FileHandler.ReadContacts();
-        if (!getContacts) return false;
+        if (!getContacts)
+        {
+            Console.WriteLine("Couldn't read contacts- start with an empty list.");
+            contactList = new List<Contact>();
+        }
 
+        // Display section title for chosen menu action
         if (options[num] != "Close") Console.WriteLine($" \n----- {options[num]} contact:");
         if (num >= 0 && num < options.Length && num != 5)
         {
