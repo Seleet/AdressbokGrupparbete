@@ -14,15 +14,15 @@ class AddressBook
         FileHandler.SetFilePath(filePath);
     }
 
-    public void RunAddressBookApp()
+    public void RunAddressBookApp() //This Is the method that starts the Program
     {
-        bool openAddressBook = true;
-        OpenCloseApp(true);
+        bool openAddressBook = true; //Sets a boolean to true to keep The Addressbookwhile loop runninmg.
+        OpenCloseApp(true); //OpenCloseApp writes Welcoming "booting" with slow threadsleep
 
         while (openAddressBook)
         {
-            int choice = MainMenu();
-            openAddressBook = MeddlingKid(choice);
+            int choice = MainMenu(); //creates an int choice to recieve the choice made in  MainMenu Method.
+            openAddressBook = HandleMenuChoice(choice);
         }
         OpenCloseApp(false);
     }
@@ -33,31 +33,28 @@ class AddressBook
     public int MainMenu()
     {
         Console.WriteLine($"\n-- Choose an action by entering a number [1-{options.Length}]:");
-        for (int i = 0; i < options.Length; i++)
+        for (int i = 0; i < options.Length; i++) //forloops thru the options array and writes contact unless its "Close app"
         {
             string msg = options[i] != "Close" ? "contact" : "app";
             Console.WriteLine($"{i + 1}. {options[i]} {msg}");
         }
 
-        int index = Helpers.PromptIntQuestion("");
+        int index = Helpers.PromptIntQuestion(""); // PromptIntQuestion Validates input is correct with 
         while (index > options.Length)
         {
-            index = Helpers.PromptIntQuestion($"Not a valid number. Enter a number between [1-{options.Length}]:");
+            index = Helpers.PromptIntQuestion($"Not a valid number. Enter a number between [1-{options.Length}]:"); //If index is higher than options, try again
         }
 
-        index--;
+        index--; //index reduced by 1 because arrays start with index 0
 
         return index;
     }
 
-    bool MeddlingKid(int num)
+    bool HandleMenuChoice(int num) //Changed name from MeddlingKid for clarity
     {
-        // NOTE (Martin, 2025-10-07):
-        // File creation is now handled in Program.cs, so this block is unlikely to run.
-        // Left in place as a safeguard.
 
-        (bool getContacts, contactList) = FileHandler.ReadContacts();
-        if (!getContacts)
+
+        (bool getContacts, contactList) = FileHandler.ReadContacts(); // deconstruction of tuple.
         {
             Console.WriteLine("Couldn't read contacts- start with an empty list.");
             contactList = new List<Contact>();

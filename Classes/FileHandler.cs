@@ -1,9 +1,9 @@
 static class FileHandler
 {
-    static public string fileName = "";
+    static private string fileName = ""; //Changed from pulblic to private because encapsulation (Martin 2025-10-08)
     static public void SetFilePath(string path)
     {
-        fileName = @path;
+        fileName = path;//removed @ fronm @path (Martin, 2025-10-08)
     }
 
     static public (bool success, List<Contact> contacts) ReadContacts()
