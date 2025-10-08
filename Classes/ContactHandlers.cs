@@ -2,7 +2,7 @@ static class ContactHandlers
 {
     static public void ListContacts(List<Contact> contactList)
     {
-        LogAllContacts(contactList);
+        DisplayAllContacts(contactList);
     }
 
     static public void FindContacts(List<Contact> contactList)
@@ -26,7 +26,7 @@ static class ContactHandlers
         }
         else
         {
-            LogAllContacts(foundContact);
+            DisplayAllContacts(foundContact);
         }
     }
 
@@ -150,7 +150,7 @@ static class ContactHandlers
         Console.WriteLine($"Contact info -- ID: {c.ID}, First Name: {c.FirstName}, Last Name: {c.LastName}, Street: {c.Street}, Zip Code: {c.ZipCode}, City: {c.City}, Phone: {c.Phone}, Email: {c.Email}");
         Console.ResetColor();
     }
-    static void LogAllContacts(List<Contact> contactList)
+    static void DisplayAllContacts(List<Contact> contactList)
     {
         foreach (var c in contactList)
         {
