@@ -41,7 +41,7 @@ static class ContactHandlers
         string phone = Helpers.PromptStringQuestion("Enter phone: ");
         string email = Helpers.PromptStringQuestion("Enter email: ");
 
-        Contact newContact = new(ID, firstname.ToLower(), lastname.ToLower(), street.ToLower(), zipCode.ToUpper(), city.ToLower(), phone.ToString(), email.ToLower());
+        Contact newContact = new(ID, firstname.ToLower(), lastname.ToLower(), street.ToLower(), zipCode.ToUpper(), city.ToLower(), phone.ToLower(), email.ToLower());
 
         ContactSummary(newContact);
         bool isCorrect = Helpers.PromptYesNoQuestion("Is this correct [y/n]?");
