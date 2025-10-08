@@ -75,7 +75,9 @@ class AddressBook
             case 3: ContactHandlers.DeleteContact(contactList); break;
             case 4: ContactHandlers.FindContacts(contactList); break;
         }
-        return Helpers.PromptYesNoQuestion("\nReturn to main menu [y/n]? ");
+        return true; // Automatically return to main menu without asking
+
+        //return Helpers.PromptYesNoQuestion("\nReturn to main menu [y/n]? ");
 
     }
 
