@@ -147,9 +147,22 @@ static class ContactHandlers
     static void PrintContact(Contact c)
     {
         Console.ForegroundColor = ConsoleColor.Yellow;
-        Console.WriteLine($"Contact info -- ID: {c.ID}, First Name: {c.FirstName}, Last Name: {c.LastName}, Street: {c.Street}, Zip Code: {c.ZipCode}, City: {c.City}, Phone: {c.Phone}, Email: {c.Email}");
+        Console.WriteLine("\n──────────────────────────────────────────────");
+        Console.WriteLine($"ID:       {c.ID}");
+        Console.WriteLine($"Name:     {Capitalize(c.FirstName)} {Capitalize(c.LastName)}");
+        Console.WriteLine($"Address:  {Capitalize(c.Street)}, {c.ZipCode} {Capitalize(c.City)}");
+        Console.WriteLine($"Phone:    {c.Phone}");
+        Console.WriteLine($"Email:    {c.Email}");
+        Console.WriteLine("──────────────────────────────────────────────");
         Console.ResetColor();
     }
+
+    static string Capitalize(string s)
+    {
+        if (string.IsNullOrWhiteSpace(s)) return s;
+        return char.ToUpper(s[0]) + s[1..];
+    }
+
     static void DisplayAllContacts(List<Contact> contactList)
     {
         foreach (var c in contactList)
