@@ -55,8 +55,9 @@ class AddressBook
 
 
         (bool getContacts, contactList) = FileHandler.ReadContacts(); // deconstruction of tuple.
+        if (!getContacts)
         {
-            Console.WriteLine("Couldn't read contacts- start with an empty list.");
+            Console.WriteLine("Couldn't read contacts - start with an empty list.");
             contactList = new List<Contact>();
         }
 
