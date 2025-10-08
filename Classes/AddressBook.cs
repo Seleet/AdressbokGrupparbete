@@ -6,8 +6,8 @@
 class AddressBook
 {
 
-    string[] options = ["List", "Create", "Update", "Delete", "Find", "Close"];
-    List<Contact> contactList = [];
+    private readonly string[] options = ["List", "Create", "Update", "Delete", "Find", "Close"]; //Private read only encapsulated
+    private List<Contact> contactList = [];
 
     public AddressBook(string filePath)
     {
@@ -16,9 +16,14 @@ class AddressBook
 
     public void RunAddressBookApp() //This Is the method that starts the Program
     {
-        bool openAddressBook = true; //Sets a boolean to true to keep The Addressbookwhile loop runninmg.
+
         OpenCloseApp(true); //OpenCloseApp writes Welcoming "booting" with slow threadsleep
 
+
+        var (ok, list) = FileHandler.ReadContacts(); //Loads one time
+        contactList = ok ? list : new List<Contact>();
+
+        bool openAddressBook = true; //Sets a boolean to true to keep The Addressbookwhile loop runninmg.
         while (openAddressBook)
         {
             int choice = MainMenu(); //creates an int choice to recieve the choice made in  MainMenu Method.
@@ -40,7 +45,7 @@ class AddressBook
         }
 
         int index = Helpers.PromptIntQuestion(""); // PromptIntQuestion Validates input is correct with 
-        while (index > options.Length)
+        while (index < 1 || index > options.Length) // Added lower-bound check to prevent values below 1 (e.g., 0) from becoming -1 after index--.
         {
             index = Helpers.PromptIntQuestion($"Not a valid number. Enter a number between [1-{options.Length}]:"); //If index is higher than options, try again
         }
@@ -56,30 +61,22 @@ class AddressBook
 
         (bool getContacts, contactList) = FileHandler.ReadContacts(); // deconstruction of tuple.
 
-        /* if (!getContacts) //not needed if-safetyblock since file and filepath is always initiated.
-        {
-            Console.WriteLine("Couldn't read contacts - start with an empty list.");
-            contactList = new List<Contact>();
-        }*/
+        bool isClose = num == options.Length - 1;
+        if (num < 0 || num >= options.Length) return false;
+        if (isClose) return false;
+        Console.WriteLine($"\n----- {options[num]} contact:");
 
-        // Display section title for chosen menu action
-        if (options[num] != "Close") Console.WriteLine($" \n----- {options[num]} contact:");
-        if (num >= 0 && num < options.Length && num != 5)
+
+        switch (num)
         {
-            switch (num)
-            {
-                case 0: ContactHandlers.ListContacts(contactList); break;
-                case 1: ContactHandlers.CreateContact(contactList); break;
-                case 2: ContactHandlers.UpdateContact(contactList); break;
-                case 3: ContactHandlers.DeleteContact(contactList); break;
-                case 4: ContactHandlers.FindContacts(contactList); break;
-            }
-            return Helpers.PromptYesNoQuestion("\nReturn to main menu [y/n]? ");
+            case 0: ContactHandlers.ListContacts(contactList); break;
+            case 1: ContactHandlers.CreateContact(contactList); break;
+            case 2: ContactHandlers.UpdateContact(contactList); break;
+            case 3: ContactHandlers.DeleteContact(contactList); break;
+            case 4: ContactHandlers.FindContacts(contactList); break;
         }
-        else
-        {
-            return false;
-        }
+        return Helpers.PromptYesNoQuestion("\nReturn to main menu [y/n]? ");
+
     }
 
     void OpenCloseApp(bool open)
