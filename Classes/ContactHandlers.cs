@@ -43,7 +43,7 @@ static class ContactHandlers
 
         Contact newContact = new(ID, firstname.ToLower(), lastname.ToLower(), street.ToLower(), zipCode.ToUpper(), city.ToLower(), phone.ToLower(), email.ToLower());
 
-        ContactSummary(newContact);
+        PrintContact(newContact);
         bool isCorrect = Helpers.PromptYesNoQuestion("Is this correct [y/n]?");
 
         if (!isCorrect) newContact = EditField(newContact);
@@ -60,7 +60,7 @@ static class ContactHandlers
 
         if (id)
         {
-            ContactSummary(contactList[contactIndex]);
+            PrintContact(contactList[contactIndex]);
             contactList[contactIndex] = EditField(contactList[contactIndex]);
 
             ConfirmAction("Contact updated!");
@@ -73,7 +73,7 @@ static class ContactHandlers
         bool id = GetContactIndex(contactList, out int contactIndex);
         if (id)
         {
-            ContactSummary(contactList[contactIndex]);
+            PrintContact(contactList[contactIndex]);
             bool isYes = Helpers.PromptYesNoQuestion($"Are you sure you want to delete {contactList[contactIndex].FirstName} {contactList[contactIndex].LastName} from your contacts [y/n]? ");
             if (isYes)
             {
@@ -138,13 +138,13 @@ static class ContactHandlers
                 case "email": c.Email = Helpers.PromptStringQuestion("Enter email: ").ToLower(); break;
                 default: Console.WriteLine("Invalid option"); break;
             }
-            ContactSummary(c);
+            PrintContact(c);
             stopLoop = Helpers.PromptYesNoQuestion("Is this correct [y/n]? ");
         }
         return c;
     }
 
-    static void ContactSummary(Contact c)
+    static void PrintContact(Contact c)
     {
         Console.ForegroundColor = ConsoleColor.Yellow;
         Console.WriteLine($"Contact info -- ID: {c.ID}, First Name: {c.FirstName}, Last Name: {c.LastName}, Street: {c.Street}, Zip Code: {c.ZipCode}, City: {c.City}, Phone: {c.Phone}, Email: {c.Email}");
@@ -154,7 +154,7 @@ static class ContactHandlers
     {
         foreach (var c in contactList)
         {
-            ContactSummary(c);
+            PrintContact(c);
         }
     }
 
