@@ -11,13 +11,14 @@ static class ContactHandlers
         searchTerm = searchTerm.ToLower();
 
         List<Contact> foundContact = contactList.Where(
-            c => c.Name.Contains(searchTerm) ||
-                 c.Street.Contains(searchTerm) ||
-                 c.ZipCode.Contains(searchTerm) ||
-                 c.City.Contains(searchTerm) ||
-                 c.Phone.ToString().Contains(searchTerm) ||
-                 c.Email.Contains(searchTerm)
-        ).ToList();
+        c => c.FirstName.ToLower().Contains(searchTerm) ||
+             c.LastName.ToLower().Contains(searchTerm) ||
+             c.Street.ToLower().Contains(searchTerm) ||
+             c.ZipCode.ToLower().Contains(searchTerm) ||
+             c.City.ToLower().Contains(searchTerm) ||
+             c.Phone.ToLower().Contains(searchTerm) ||
+             c.Email.ToLower().Contains(searchTerm)
+             ).ToList();
 
         if (foundContact.Count == 0)
         {
@@ -32,14 +33,15 @@ static class ContactHandlers
     static public void CreateContact(List<Contact> contactList)
     {
         long ID = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
-        string name = Helpers.PromptStringQuestion("Enter name: ");
+        string firstname = Helpers.PromptStringQuestion("Enter firstname: ");
+        string lastname = Helpers.PromptStringQuestion("Enter lastname: ");
         string street = Helpers.PromptStringQuestion("Enter street: ");
         string zipCode = Helpers.PromptStringQuestion("Enter zip code: ");
         string city = Helpers.PromptStringQuestion("Enter city: ");
-        int phone = Helpers.PromptIntQuestion("Enter phone: ");
+        string phone = Helpers.PromptStringQuestion("Enter phone: ");
         string email = Helpers.PromptStringQuestion("Enter email: ");
 
-        Contact newContact = new(ID, name.ToLower(), street.ToLower(), zipCode.ToUpper(), city.ToLower(), phone, email.ToLower());
+        Contact newContact = new(ID, firstname.ToLower(), lastname.ToLower(), street.ToLower(), zipCode.ToUpper(), city.ToLower(), phone.ToLower(), email.ToLower());
 
         ContactSummary(newContact);
         bool isCorrect = Helpers.PromptYesNoQuestion("Is this correct [y/n]?");
@@ -72,7 +74,7 @@ static class ContactHandlers
         if (id)
         {
             ContactSummary(contactList[contactIndex]);
-            bool isYes = Helpers.PromptYesNoQuestion($"Are you sure you want to delete {contactList[contactIndex].Name} from your contacts [y/n]? ");
+            bool isYes = Helpers.PromptYesNoQuestion($"Are you sure you want to delete {contactList[contactIndex].FirstName} {contactList[contactIndex].LastName} from your contacts [y/n]? ");
             if (isYes)
             {
                 bool isDeleted = contactList.Remove(contactList[contactIndex]);
@@ -94,7 +96,8 @@ static class ContactHandlers
         foreach (var contact in contactList)
         {
             Thread.Sleep(150);
-            Console.WriteLine($"ID: {contact.ID} -- Name: {contact.Name}");
+            Console.WriteLine($"ID: {contact.ID} -- Name: {contact.FirstName} {contact.LastName}");
+
         }
 
         while (true)
@@ -126,11 +129,12 @@ static class ContactHandlers
 
             switch (correctField.ToLower())
             {
-                case "name": c.Name = Helpers.PromptStringQuestion("Enter name: ").ToLower(); break;
+                case "firstname": c.FirstName = Helpers.PromptStringQuestion("Enter name: ").ToLower(); break;
+                case "lastname": c.LastName = Helpers.PromptStringQuestion("Enter name: ").ToLower(); break;
                 case "address": c.Street = Helpers.PromptStringQuestion("Enter street: ").ToLower(); break;
                 case "zip code": c.ZipCode = Helpers.PromptStringQuestion("Enter zip code: ").ToUpper(); break;
                 case "city": c.City = Helpers.PromptStringQuestion("Enter city: ").ToLower(); break;
-                case "phone": c.Phone = Helpers.PromptIntQuestion("Enter phone: "); break;
+                case "phone": c.Phone = Helpers.PromptStringQuestion("Enter phone: "); break;
                 case "email": c.Email = Helpers.PromptStringQuestion("Enter email: ").ToLower(); break;
                 default: Console.WriteLine("Invalid option"); break;
             }
@@ -143,10 +147,9 @@ static class ContactHandlers
     static void ContactSummary(Contact c)
     {
         Console.ForegroundColor = ConsoleColor.Yellow;
-        Console.WriteLine($"Contact info -- ID: {c.ID}, Name: {c.Name}, Street: {c.Street}, Zip Code: {c.ZipCode}, City: {c.City}, Phone: {c.Phone}, Email: {c.Email}");
+        Console.WriteLine($"Contact info -- ID: {c.ID}, First Name: {c.FirstName}, Last Name: {c.LastName}, Street: {c.Street}, Zip Code: {c.ZipCode}, City: {c.City}, Phone: {c.Phone}, Email: {c.Email}");
         Console.ResetColor();
     }
-
     static void LogAllContacts(List<Contact> contactList)
     {
         foreach (var c in contactList)

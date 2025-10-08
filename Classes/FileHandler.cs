@@ -1,20 +1,36 @@
 static class FileHandler
 {
-    static public string fileName = "";
+    static private string fileName = ""; //Changed from pulblic to private because encapsulation (Martin 2025-10-08)
     static public void SetFilePath(string path)
     {
-        fileName = @path;
+        fileName = path;//removed @ fronm @path (Martin, 2025-10-08)
     }
+
     static public (bool success, List<Contact> contacts) ReadContacts()
     {
         List<Contact> list = new();
         try
         {
+            // FIX (Martin, 2025-10-07):
+            // File error handled in Program.cs – this remains as a safety check.
+
+
+            if (!File.Exists(fileName))
+            {
+                Directory.CreateDirectory(Path.GetDirectoryName(fileName)!);
+                using var _ = File.Create(fileName);
+                return (true, list);
+            }
+
             using (StreamReader reader = new(fileName))
             {
                 string? line;
                 while ((line = reader.ReadLine()) != null)
                 {
+                    if (string.IsNullOrWhiteSpace(line)) continue;
+                    // Protection against broken files
+                    var parts = line.Split(',');
+                    if (parts.Length < 8) continue;
                     ConvertToListItem(list, line);
                 }
                 return (true, list);
@@ -31,7 +47,7 @@ static class FileHandler
     {
         var parts = listItem.Split(',');
         Contact person = new(
-            long.Parse(parts[0]), parts[1], parts[2], parts[3], parts[4], int.Parse(parts[5]), parts[6]
+            long.Parse(parts[0]), parts[1], parts[2], parts[3], parts[4], (parts[5]), parts[6], parts[7]
         );
         list.Add(person);
         return list;
@@ -42,11 +58,18 @@ static class FileHandler
     {
         try
         {
+            // ======================================
+            // FIX (Martin, 2025-10-07):
+            // Issue: App crashed when directory didn't exist.
+            // Solution: Ensure directory exists before writing.
+            // ======================================
+            Directory.CreateDirectory(Path.GetDirectoryName(fileName)!);
             using (StreamWriter writer = new(fileName))
             {
                 foreach (var item in list)
                 {
-                    writer.WriteLine($"{item.ID},{item.Name},{item.Street},{item.ZipCode},{item.City},{item.Phone},{item.Email}");
+                  writer.WriteLine($"{item.ID},{item.FirstName},{item.LastName},{item.Street},{item.ZipCode},{item.City},{item.Phone},{item.Email}");
+
                 }
                 return true;
             }

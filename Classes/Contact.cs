@@ -1,18 +1,22 @@
 class Contact
 {
-    public string Name;
-    public string Street;
-    public string ZipCode;
-    public string City;
-    public int Phone;
-    public string Email;
-    public long ID;
+   
+    // --- Properties (data fields) ---
+    public string FirstName { get; set; } = "";      // First name of the person
+    public string LastName { get; set; } = "";       // Last name of the person
+    public string Street { get; set; } = "";  // Street + house number
+    public string ZipCode { get; set; } = "";     // Postal/ZIP code
+    public string City { get; set; } = "";           // City or town
+    public string Phone { get; set; } = "";    // Phone number
+    public string Email { get; set; } = "";          // Email address    public long ID;
+    public long ID { get; private set; }
 
-    public Contact(long _num, string _name, string _street, string _zipCode, string _city,
-    int _phone, string _email)
+    public Contact(long _num, string _firstname, string _lastname, string _street, string _zipCode, string _city,
+    string _phone, string _email)
     {
         ID = _num;
-        Name = _name;
+        FirstName = _firstname;
+        LastName = _lastname;
         Street = _street;
         ZipCode = _zipCode;
         City = _city;
