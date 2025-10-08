@@ -55,11 +55,12 @@ class AddressBook
 
 
         (bool getContacts, contactList) = FileHandler.ReadContacts(); // deconstruction of tuple.
-        if (!getContacts)
+
+        /* if (!getContacts) //not needed if-safetyblock since file and filepath is always initiated.
         {
             Console.WriteLine("Couldn't read contacts - start with an empty list.");
             contactList = new List<Contact>();
-        }
+        }*/
 
         // Display section title for chosen menu action
         if (options[num] != "Close") Console.WriteLine($" \n----- {options[num]} contact:");
