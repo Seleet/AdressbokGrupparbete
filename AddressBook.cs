@@ -2,11 +2,20 @@
 /// Represents the main AddressBook application.
 /// Handles the program flow, main menu, and links user choices to the correct contact operations.
 /// </summary>
+public enum MenuOption
+{
+    List = 1,
+    Create,
+    Update,
+    Delete,
+    Find,
+    Close
+}
 
 class AddressBook
 {
 
-    private readonly string[] options = ["List", "Create", "Update", "Delete", "Find", "Close"]; //Private read only encapsulated
+    private readonly MenuOption[] options = Enum.GetValues<MenuOption>(); //Private read only encapsulated
     private List<Contact> contactList = [];
 
     public AddressBook(string filePath)
@@ -35,48 +44,40 @@ class AddressBook
     // Comment: Main menu loop out 'options array'. User pick an action between [1 - length of array]
     //          PromptIntQuestion handles the verification logic, once a number is confirmed,
     //          to match the index InputNum subtracts -1 and the method returns the index.
-    public int MainMenu()
+  public int MainMenu()
+{
+    Console.WriteLine($"\n-- Choose an action by entering a number [1-{options.Length}]:");
+
+    foreach (var option in options)
     {
-        Console.WriteLine($"\n-- Choose an action by entering a number [1-{options.Length}]:");
-        for (int i = 0; i < options.Length; i++) //forloops thru the options array and writes contact unless its "Close app"
-        {
-            string msg = options[i] != "Close" ? "contact" : "app";
-            Console.WriteLine($"{i + 1}. {options[i]} {msg}");
-        }
-
-        int index = Helpers.PromptIntQuestion(""); // PromptIntQuestion Validates input is correct with 
-        while (index < 1 || index > options.Length) // Added lower-bound check to prevent values below 1 (e.g., 0) from becoming -1 after index--.
-        {
-            index = Helpers.PromptIntQuestion($"Not a valid number. Enter a number between [1-{options.Length}]:"); //If index is higher than options, try again
-        }
-
-        index--; //index reduced by 1 because arrays start with index 0
-
-        return index;
+        string msg = option != MenuOption.Close ? "contact" : "app";
+        Console.WriteLine($"{(int)option}. {option} {msg}");
     }
 
-    bool HandleMenuChoice(int num) //Changed name from MeddlingKid for clarity
+    int index = Helpers.PromptIntQuestion("");
+    while (index < 1 || index > options.Length)
     {
+        index = Helpers.PromptIntQuestion($"Not a valid number. Enter a number between [1-{options.Length}]:");
+    }
 
+    return index;
+}
 
-        (bool getContacts, contactList) = FileHandler.ReadContacts(); // deconstruction of tuple.
+    bool HandleMenuChoice(int choiceNumber) //Changed name from MeddlingKid for clarity
+    {
+         MenuOption choice = (MenuOption)choiceNumber;
 
-        bool isClose = num == options.Length - 1;
-        if (num < 0 || num >= options.Length) return false;
-        if (isClose) return false;
-        Console.WriteLine($"\n----- {options[num]} contact:");
-
-
-        switch (num)
+        switch (choice)
         {
-            case 0: ContactHandlers.ListContacts(contactList); break;
-            case 1: ContactHandlers.CreateContact(contactList); break;
-            case 2: ContactHandlers.UpdateContact(contactList); break;
-            case 3: ContactHandlers.DeleteContact(contactList); break;
-            case 4: ContactHandlers.FindContacts(contactList); break;
+            case MenuOption.List: ContactHandlers.ListContacts(contactList); break;
+            case MenuOption.Create: ContactHandlers.CreateContact(contactList); break;
+            case MenuOption.Update: ContactHandlers.UpdateContact(contactList); break;
+            case MenuOption.Delete: ContactHandlers.DeleteContact(contactList); break;
+            case MenuOption.Find: ContactHandlers.FindContacts(contactList); break;
+            case MenuOption.Close: return false;
+            default: return true; // Automatically return to main menu without asking
         }
-        return true; // Automatically return to main menu without asking
-
+        return true;
         //return Helpers.PromptYesNoQuestion("\nReturn to main menu [y/n]? ");
 
     }
