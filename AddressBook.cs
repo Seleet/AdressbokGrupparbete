@@ -41,15 +41,22 @@ class AddressBook
         OpenCloseApp(false);
     }
 
-  
+
     public int MainMenu() //Displays the main menu and gets user choice.
     {
         Console.WriteLine($"\n-- Choose an action by entering a number [1-{options.Length}]:"); //Dynamically displays the number of options available.
-        foreach (var option in options) 
+        foreach (var option in options)
         {
-            string msg = option != MenuOption.Close ? "contact" : "app"; 
-            Console.WriteLine($"{(int)option}. {option} {msg}"); 
+            string msg = option switch
+            {
+                MenuOption.Close => "app", // Special case for better UX
+                MenuOption.List => "contacts",   // Plural for better UX
+                _ => "contact" // Default case
+            };
+
+            Console.WriteLine($"{(int)option}. {option} {msg}");
         }
+
 
         int index = ConsoleHelper.PromptIntQuestion(""); //Gets user input and verifies that it is a valid integer.
         while (index < 1 || index > options.Length)
