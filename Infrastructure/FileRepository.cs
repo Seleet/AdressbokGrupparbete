@@ -1,4 +1,4 @@
-static class FileHandler
+static class FileRepository
 {
     static private string fileName = ""; //Changed from pulblic to private because encapsulation (Martin 2025-10-08)
     static public void SetFilePath(string path)
@@ -68,7 +68,7 @@ static class FileHandler
             {
                 foreach (var item in list)
                 {
-                  writer.WriteLine($"{item.ID},{item.FirstName},{item.LastName},{item.Street},{item.ZipCode},{item.City},{item.Phone},{item.Email}");
+                    writer.WriteLine($"{item.ID},{item.FirstName},{item.LastName},{item.Street},{item.ZipCode},{item.City},{item.Phone},{item.Email}");
 
                 }
                 return true;

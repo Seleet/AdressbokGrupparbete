@@ -1,4 +1,4 @@
-static class ContactHandlers
+static class ContactService
 {
     static public void ListContacts(List<Contact> contactList)
     {
@@ -7,7 +7,7 @@ static class ContactHandlers
 
     static public void FindContacts(List<Contact> contactList)
     {
-        string searchTerm = Helpers.PromptStringQuestion("Enter search phrase: ");
+        string searchTerm = ConsoleHelper.PromptStringQuestion("Enter search phrase: ");
         searchTerm = searchTerm.ToLower();
 
         List<Contact> foundContact = contactList.Where(
@@ -33,24 +33,24 @@ static class ContactHandlers
     static public void CreateContact(List<Contact> contactList)
     {
         long ID = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
-        string firstname = Helpers.PromptStringQuestion("Enter firstname: ");
-        string lastname = Helpers.PromptStringQuestion("Enter lastname: ");
-        string street = Helpers.PromptStringQuestion("Enter street: ");
-        string zipCode = Helpers.PromptStringQuestion("Enter zip code: ");
-        string city = Helpers.PromptStringQuestion("Enter city: ");
-        string phone = Helpers.PromptStringQuestion("Enter phone: ");
-        string email = Helpers.PromptStringQuestion("Enter email: ");
+        string firstname = ConsoleHelper.PromptStringQuestion("Enter firstname: ");
+        string lastname = ConsoleHelper.PromptStringQuestion("Enter lastname: ");
+        string street = ConsoleHelper.PromptStringQuestion("Enter street: ");
+        string zipCode = ConsoleHelper.PromptStringQuestion("Enter zip code: ");
+        string city = ConsoleHelper.PromptStringQuestion("Enter city: ");
+        string phone = ConsoleHelper.PromptStringQuestion("Enter phone: ");
+        string email = ConsoleHelper.PromptStringQuestion("Enter email: ");
 
         Contact newContact = new(ID, firstname.ToLower(), lastname.ToLower(), street.ToLower(), zipCode.ToUpper(), city.ToLower(), phone.ToLower(), email.ToLower());
 
         PrintContact(newContact);
-        bool isCorrect = Helpers.PromptYesNoQuestion("Is this correct [y/n]?");
+        bool isCorrect = ConsoleHelper.PromptYesNoQuestion("Is this correct [y/n]?");
 
         if (!isCorrect) newContact = EditField(newContact);
 
         contactList.Add(newContact);
         ConfirmAction("Contact created!");
-        FileHandler.Write(contactList);
+        FileRepository.Write(contactList);
 
     }
 
@@ -64,7 +64,7 @@ static class ContactHandlers
             contactList[contactIndex] = EditField(contactList[contactIndex]);
 
             ConfirmAction("Contact updated!");
-            FileHandler.Write(contactList);
+            FileRepository.Write(contactList);
         }
     }
 
@@ -74,7 +74,7 @@ static class ContactHandlers
         if (id)
         {
             PrintContact(contactList[contactIndex]);
-            bool isYes = Helpers.PromptYesNoQuestion($"Are you sure you want to delete {contactList[contactIndex].FirstName} {contactList[contactIndex].LastName} from your contacts [y/n]? ");
+            bool isYes = ConsoleHelper.PromptYesNoQuestion($"Are you sure you want to delete {contactList[contactIndex].FirstName} {contactList[contactIndex].LastName} from your contacts [y/n]? ");
             if (isYes)
             {
                 bool isDeleted = contactList.Remove(contactList[contactIndex]);
@@ -82,7 +82,7 @@ static class ContactHandlers
                 {
                     ConfirmAction("Contact removed!");
                 }
-                FileHandler.Write(contactList);
+                FileRepository.Write(contactList);
             }
         }
     }
@@ -102,7 +102,7 @@ static class ContactHandlers
 
         while (true)
         {
-            string input = Helpers.PromptStringQuestion("\nEnter ID of the contact you want to update: ");
+            string input = ConsoleHelper.PromptStringQuestion("\nEnter ID of the contact you want to update: ");
             if (long.TryParse(input, out _))
             {
                 contactIndex = contactList.FindIndex(c => c.ID.ToString() == input);
@@ -116,7 +116,7 @@ static class ContactHandlers
                 Console.WriteLine("\nNot a valid ID.");
             }
 
-            if (!Helpers.PromptYesNoQuestion("Try again [y/n]? ")) return false;
+            if (!ConsoleHelper.PromptYesNoQuestion("Try again [y/n]? ")) return false;
         }
     }
 
@@ -125,21 +125,21 @@ static class ContactHandlers
         bool stopLoop = false;
         while (!stopLoop)
         {
-            string correctField = Helpers.PromptStringQuestion($"- Which field do you wish to correct? ");
+            string correctField = ConsoleHelper.PromptStringQuestion($"- Which field do you wish to correct? ");
 
             switch (correctField.ToLower())
             {
-                case "firstname": c.FirstName = Helpers.PromptStringQuestion("Enter name: ").ToLower(); break;
-                case "lastname": c.LastName = Helpers.PromptStringQuestion("Enter name: ").ToLower(); break;
-                case "address": c.Street = Helpers.PromptStringQuestion("Enter street: ").ToLower(); break;
-                case "zip code": c.ZipCode = Helpers.PromptStringQuestion("Enter zip code: ").ToUpper(); break;
-                case "city": c.City = Helpers.PromptStringQuestion("Enter city: ").ToLower(); break;
-                case "phone": c.Phone = Helpers.PromptStringQuestion("Enter phone: "); break;
-                case "email": c.Email = Helpers.PromptStringQuestion("Enter email: ").ToLower(); break;
+                case "firstname": c.FirstName = ConsoleHelper.PromptStringQuestion("Enter name: ").ToLower(); break;
+                case "lastname": c.LastName = ConsoleHelper.PromptStringQuestion("Enter name: ").ToLower(); break;
+                case "address": c.Street = ConsoleHelper.PromptStringQuestion("Enter street: ").ToLower(); break;
+                case "zip code": c.ZipCode = ConsoleHelper.PromptStringQuestion("Enter zip code: ").ToUpper(); break;
+                case "city": c.City = ConsoleHelper.PromptStringQuestion("Enter city: ").ToLower(); break;
+                case "phone": c.Phone = ConsoleHelper.PromptStringQuestion("Enter phone: "); break;
+                case "email": c.Email = ConsoleHelper.PromptStringQuestion("Enter email: ").ToLower(); break;
                 default: Console.WriteLine("Invalid option"); break;
             }
             PrintContact(c);
-            stopLoop = Helpers.PromptYesNoQuestion("Is this correct [y/n]? ");
+            stopLoop = ConsoleHelper.PromptYesNoQuestion("Is this correct [y/n]? ");
         }
         return c;
     }

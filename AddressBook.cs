@@ -20,7 +20,7 @@ class AddressBook
 
     public AddressBook(string filePath)
     {
-        FileHandler.SetFilePath(filePath);
+        FileRepository.SetFilePath(filePath);
     }
 
     public void RunAddressBookApp() //This Is the method that starts the Program
@@ -29,14 +29,14 @@ class AddressBook
         OpenCloseApp(true); //OpenCloseApp writes Welcoming "booting" with slow threadsleep
 
 
-        var (ok, list) = FileHandler.ReadContacts(); //Loads one time
-        contactList = ok ? list : new List<Contact>();
+        var (ok, list) = FileRepository.ReadContacts(); //Attempts to load contacts.csv one time
+        contactList = ok ? list : new List<Contact>(); //If it fails, it creates an empty list of contacts.
 
         bool openAddressBook = true; //Sets a boolean to true to keep The Addressbookwhile loop runninmg.
-        while (openAddressBook)
+        while (openAddressBook) //Keeps the app running until user decides to close it.
         {
-            int choice = MainMenu(); //creates an int choice to recieve the choice made in  MainMenu Method.
-            openAddressBook = HandleMenuChoice(choice);
+            int choice = MainMenu(); //Starts the main menu and gets user choice.
+            openAddressBook = HandleMenuChoice(choice); //Handles the user choice and returns false if user chose to close the app.
         }
         OpenCloseApp(false);
     }
@@ -44,36 +44,35 @@ class AddressBook
     // Comment: Main menu loop out 'options array'. User pick an action between [1 - length of array]
     //          PromptIntQuestion handles the verification logic, once a number is confirmed,
     //          to match the index InputNum subtracts -1 and the method returns the index.
-  public int MainMenu()
-{
-    Console.WriteLine($"\n-- Choose an action by entering a number [1-{options.Length}]:");
-
-    foreach (var option in options)
+    public int MainMenu()
     {
-        string msg = option != MenuOption.Close ? "contact" : "app";
-        Console.WriteLine($"{(int)option}. {option} {msg}");
+        Console.WriteLine($"\n-- Choose an action by entering a number [1-{options.Length}]:");
+        foreach (var option in options)
+        {
+            string msg = option != MenuOption.Close ? "contact" : "app";
+            Console.WriteLine($"{(int)option}. {option} {msg}");
+        }
+
+        int index = ConsoleHelper.PromptIntQuestion("");
+        while (index < 1 || index > options.Length)
+        {
+            index = ConsoleHelper.PromptIntQuestion($"Not a valid number. Enter a number between [1-{options.Length}]:");
+        }
+
+        return index;
     }
 
-    int index = Helpers.PromptIntQuestion("");
-    while (index < 1 || index > options.Length)
+    bool HandleMenuChoice(int choiceNumber) //Handles the user choice and calls the appropriate method from ContactHandlers.cs
     {
-        index = Helpers.PromptIntQuestion($"Not a valid number. Enter a number between [1-{options.Length}]:");
-    }
-
-    return index;
-}
-
-    bool HandleMenuChoice(int choiceNumber) //Changed name from MeddlingKid for clarity
-    {
-         MenuOption choice = (MenuOption)choiceNumber;
+        MenuOption choice = (MenuOption)choiceNumber;
 
         switch (choice)
         {
-            case MenuOption.List: ContactHandlers.ListContacts(contactList); break;
-            case MenuOption.Create: ContactHandlers.CreateContact(contactList); break;
-            case MenuOption.Update: ContactHandlers.UpdateContact(contactList); break;
-            case MenuOption.Delete: ContactHandlers.DeleteContact(contactList); break;
-            case MenuOption.Find: ContactHandlers.FindContacts(contactList); break;
+            case MenuOption.List: ContactService.ListContacts(contactList); break;
+            case MenuOption.Create: ContactService.CreateContact(contactList); break;
+            case MenuOption.Update: ContactService.UpdateContact(contactList); break;
+            case MenuOption.Delete: ContactService.DeleteContact(contactList); break;
+            case MenuOption.Find: ContactService.FindContacts(contactList); break;
             case MenuOption.Close: return false;
             default: return true; // Automatically return to main menu without asking
         }
@@ -86,7 +85,7 @@ class AddressBook
     {
         string msg = open ? "Booting...\n" : "\nTurning off...\n";
         Console.ForegroundColor = open ? ConsoleColor.Green : ConsoleColor.Yellow;
-        Helpers.WriteSlow(msg, 50);
+        ConsoleHelper.WriteSlow(msg, 50);
         Console.ResetColor();
         if (open) Thread.Sleep(150);
     }

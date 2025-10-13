@@ -1,4 +1,4 @@
-static class Helpers
+static class ConsoleHelper
 {
     static public string PromptStringQuestion(string question)
     {
