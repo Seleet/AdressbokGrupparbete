@@ -56,13 +56,13 @@ static class ContactService
 
         if (!isCorrect) newContact = EditField(newContact);
 
-        contactList.Add(newContact);
+        contactList.Add(newContact); // Add new contact to list
         ConfirmAction("Contact created!");
-        FileRepository.Write(contactList);
+        FileRepository.Write(contactList); // Write updated list to file
 
     }
 
-    static public void UpdateContact(List<Contact> contactList)
+    static public void UpdateContact(List<Contact> contactList) // Update existing contact
     {
         bool id = GetContactIndex(contactList, out int contactIndex);
 
