@@ -1,9 +1,17 @@
 static class ContactService
 {
-    static public void ListContacts(List<Contact> contactList)
+    public static void ListContacts(List<Contact> contactList) // List all contacts in alphabetical order, Linq Lambda
     {
+
+        contactList = contactList
+            .OrderBy(c => c.LastName, StringComparer.OrdinalIgnoreCase)
+            .ThenBy(c => c.FirstName, StringComparer.OrdinalIgnoreCase)
+            .ToList();
+
+
         DisplayAllContacts(contactList);
     }
+
 
     static public void FindContacts(List<Contact> contactList)
     {

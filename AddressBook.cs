@@ -41,19 +41,17 @@ class AddressBook
         OpenCloseApp(false);
     }
 
-    // Comment: Main menu loop out 'options array'. User pick an action between [1 - length of array]
-    //          PromptIntQuestion handles the verification logic, once a number is confirmed,
-    //          to match the index InputNum subtracts -1 and the method returns the index.
-    public int MainMenu()
+  
+    public int MainMenu() //Displays the main menu and gets user choice.
     {
-        Console.WriteLine($"\n-- Choose an action by entering a number [1-{options.Length}]:");
-        foreach (var option in options)
+        Console.WriteLine($"\n-- Choose an action by entering a number [1-{options.Length}]:"); //Dynamically displays the number of options available.
+        foreach (var option in options) 
         {
-            string msg = option != MenuOption.Close ? "contact" : "app";
-            Console.WriteLine($"{(int)option}. {option} {msg}");
+            string msg = option != MenuOption.Close ? "contact" : "app"; 
+            Console.WriteLine($"{(int)option}. {option} {msg}"); 
         }
 
-        int index = ConsoleHelper.PromptIntQuestion("");
+        int index = ConsoleHelper.PromptIntQuestion(""); //Gets user input and verifies that it is a valid integer.
         while (index < 1 || index > options.Length)
         {
             index = ConsoleHelper.PromptIntQuestion($"Not a valid number. Enter a number between [1-{options.Length}]:");
@@ -81,7 +79,7 @@ class AddressBook
 
     }
 
-    void OpenCloseApp(bool open)
+    void OpenCloseApp(bool open) //Writes Welcoming "booting" with slow threadsleep and "turning off" when closing the app.
     {
         string msg = open ? "Booting...\n" : "\nTurning off...\n";
         Console.ForegroundColor = open ? ConsoleColor.Green : ConsoleColor.Yellow;
