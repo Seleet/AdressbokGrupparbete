@@ -29,7 +29,7 @@ class AddressBook
         OpenCloseApp(true); //OpenCloseApp writes Welcoming "booting" with slow threadsleep
 
 
-        var (ok, list) = FileRepository.ReadContacts(); //Attempts to load contacts.csv one time
+        var (ok, list) = FileRepository.ReadContacts(); //Tries to read the file and returns a tuple with a boolean and a list of contacts.
         contactList = ok ? list : new List<Contact>(); //If it fails, it creates an empty list of contacts.
 
         bool openAddressBook = true; //Sets a boolean to true to keep The Addressbookwhile loop runninmg.
