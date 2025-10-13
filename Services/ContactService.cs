@@ -13,7 +13,7 @@ static class ContactService
     }
 
 
-    static public void FindContacts(List<Contact> contactList)
+    static public void FindContacts(List<Contact> contactList) // List all contacts that match search term, Linq Lambda
     {
         string searchTerm = ConsoleHelper.PromptStringQuestion("Enter search phrase: ");
         searchTerm = searchTerm.ToLower();
