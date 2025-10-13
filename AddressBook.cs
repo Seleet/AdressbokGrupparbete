@@ -47,7 +47,7 @@ class AddressBook
         Console.WriteLine($"\n-- Choose an action by entering a number [1-{options.Length}]:"); //Dynamically displays the number of options available.
         foreach (var option in options)
         {
-            string msg = option switch
+            string msg = option switch // "switch expression" to get correct grammar for each menu option.
             {
                 MenuOption.Close => "app", // Special case for better UX
                 MenuOption.List => "contacts",   // Plural for better UX
