@@ -31,8 +31,8 @@ static class FileRepository
     /// </list>
     /// </returns>
     /// <remarks>
-    /// Automatically creates the file if it does not exist.
-    /// Handles malformed lines gracefully by skipping them.
+    ///  Creates the file and its directory if they do not exist.
+    /// Skips invalid or empty lines to prevent data corruption.
     /// </remarks>
     static public (bool success, List<Contact> contacts) ReadContacts()
     {
