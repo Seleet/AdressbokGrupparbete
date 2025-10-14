@@ -9,7 +9,7 @@ static class ContactService
             .ToList();
 
 
-        DisplayAllContacts(contactList);
+        DisplayAllContacts(contactList); //Then displays them
     }
 
 
@@ -152,7 +152,7 @@ static class ContactService
         return c;
     }
 
-    static void PrintContact(Contact c)
+    static void PrintContact(Contact c) // Formatted display of a contact, capitalizes first letter of names and street, yellow color
     {
         Console.ForegroundColor = ConsoleColor.Yellow;
         Console.WriteLine("\n──────────────────────────────────────────────");
@@ -171,7 +171,7 @@ static class ContactService
         return char.ToUpper(s[0]) + s[1..];
     }
 
-    static void DisplayAllContacts(List<Contact> contactList)
+    static void DisplayAllContacts(List<Contact> contactList) // Displays all contacts in the list
     {
         foreach (var c in contactList)
         {
