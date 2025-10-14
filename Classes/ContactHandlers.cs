@@ -7,9 +7,11 @@ static class ContactHandlers
 
     static public void FindContacts(List<Contact> contactList)
     {
+        // Ask the user for a search phrase
         string searchTerm = Helpers.PromptStringQuestion("Enter search phrase: ");
-        searchTerm = searchTerm.ToLower();
+        searchTerm = searchTerm.ToLower(); // Convert to lowercase for case-insensitive search
 
+        // Filter the contact list to find matches in any contact field
         List<Contact> foundContact = contactList.Where(
             c => c.Name.Contains(searchTerm) ||
                  c.Street.Contains(searchTerm) ||
@@ -19,19 +21,19 @@ static class ContactHandlers
                  c.Email.Contains(searchTerm)
         ).ToList();
 
-        if (foundContact.Count == 0)
+        if (foundContact.Count == 0) //If no contacts can be found
         {
             Console.WriteLine("No search results.");
         }
-        else
+        else //If more contacts can be found
         {
             LogAllContacts(foundContact);
         }
     }
 
-    static public void CreateContact(List<Contact> contactList)
+    static public void CreateContact(List<Contact> contactList) //Creates the contact list 
     {
-        long ID = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+        long ID = DateTimeOffset.UtcNow.ToUnixTimeSeconds(); //Log in ID based on the current time
         string name = Helpers.PromptStringQuestion("Enter name: ");
         string street = Helpers.PromptStringQuestion("Enter street: ");
         string zipCode = Helpers.PromptStringQuestion("Enter zip code: ");
@@ -39,6 +41,7 @@ static class ContactHandlers
         int phone = Helpers.PromptIntQuestion("Enter phone: ");
         string email = Helpers.PromptStringQuestion("Enter email: ");
 
+        //Creates a new contact object with the given values
         Contact newContact = new(ID, name.ToLower(), street.ToLower(), zipCode.ToUpper(), city.ToLower(), phone, email.ToLower());
 
         ContactSummary(newContact);
@@ -140,10 +143,10 @@ static class ContactHandlers
         return c;
     }
 
-    static void ContactSummary(Contact c) //The responsibility of writing out the content lies in the class (More object oriented), Elise
+    static void ContactSummary(Contact contact) //The responsibility of writing out the content lies in the class (More object oriented), Elise
     {
         Console.ForegroundColor = ConsoleColor.Yellow;
-        Console.WriteLine(c);
+        Console.WriteLine(contact);
         Console.ResetColor();
     }
 
