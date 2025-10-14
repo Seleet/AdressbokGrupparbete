@@ -1,12 +1,40 @@
+/// <summary>
+/// Provides static methods for reading from and writing to the AddressBook data file.
+/// </summary>
+/// <remarks>
+/// The FileRepository class manages file-level operations such as creating the file or directory,
+/// parsing CSV lines into Contact objects, and writing contact lists back to disk.
+/// </remarks>
 static class FileRepository
 {
-    static private string fileName = ""; //Changed from pulblic to private because encapsulation (Martin 2025-10-08)
+    /// <summary>
+    /// Holds the path to the AddressBook data file.
+    /// </summary>
+    static private string fileName = "";
+    /// <summary>
+    /// Sets the full file path that will be used for subsequent read/write operations.
+    /// </summary>
+    /// <param name="path">The full path to the contact data file.</param>
     static public void SetFilePath(string path)
     {
-        fileName = path;//removed @ fronm @path (Martin, 2025-10-08)
+        fileName = path;
     }
 
-    static public (bool success, List<Contact> contacts) ReadContacts() //Returns a tuple with a boolean and a list of contacts.
+    /// <summary>
+    /// Reads contacts from the file defined in <see cref="fileName"/>.
+    /// </summary>
+    /// <returns>
+    /// A tuple containing:
+    /// <list type="bullet">
+    /// <item><term>success</term><description>True if the file was read successfully.</description></item>
+    /// <item><term>contacts</term><description>A list of <see cref="Contact"/> objects, or an empty list if no contacts were found.</description></item>
+    /// </list>
+    /// </returns>
+    /// <remarks>
+    /// Automatically creates the file if it does not exist.
+    /// Handles malformed lines gracefully by skipping them.
+    /// </remarks>
+    static public (bool success, List<Contact> contacts) ReadContacts()
     {
         List<Contact> list = new(); // Initialize empty list to return in case of failure
         try // Try-catch to handle file read errors
@@ -38,7 +66,12 @@ static class FileRepository
             return (false, list);
         }
     }
-
+    /// <summary>
+    /// Converts a CSV-formatted line into a <see cref="Contact"/> object and adds it to the provided list.
+    /// </summary>
+    /// <param name="list">The list to which the new Contact object will be added.</param>
+    /// <param name="listItem">A comma-separated string representing one contact record.</param>
+    /// <returns>The same list instance, with the new Contact appended.</returns>
     static List<Contact> ConvertToListItem(List<Contact> list, string listItem)
     {
         var parts = listItem.Split(',');
@@ -49,7 +82,15 @@ static class FileRepository
         return list;
     }
 
-
+    /// <summary>
+    /// Writes all contacts to the file specified in <see cref="fileName"/>.
+    /// </summary>
+    /// <param name="list">The list of <see cref="Contact"/> objects to write.</param>
+    /// <returns>True if the write operation succeeds; otherwise, false.</returns>
+    /// <remarks>
+    /// Ensures that the directory exists before attempting to write.  
+    /// Overwrites the file if it already exists.
+    /// </remarks>
     static public bool Write(List<Contact> list)
     {
         try
