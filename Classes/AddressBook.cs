@@ -49,7 +49,7 @@ class AddressBook
         (bool getContacts, contactList) = FileHandler.ReadContacts();
         if (!getContacts) return false;
 
-        if (options[num] != "Close") Console.WriteLine($" \n----- {options[num]} contact:");
+      
         if (num >= 0 && num < options.Length && num != 5)
         {
             switch (num)
@@ -64,6 +64,7 @@ class AddressBook
         }
         else
         {
+            Console.WriteLine($" \n----- {options[num]} contact:"); //Refactored num num != 5 is "Close"
             return false;
         }
     }
