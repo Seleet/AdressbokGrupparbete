@@ -2,7 +2,8 @@
 /// Represents the main AddressBook application.
 /// Handles the program flow, main menu, and links user choices to the correct contact operations.
 /// </summary>
-public enum MenuOption
+
+public enum MenuOption //Enum for menu options
 {
     List = 1,
     Create,
@@ -17,7 +18,7 @@ class AddressBook
 
     private readonly MenuOption[] options = Enum.GetValues<MenuOption>(); //Private read only encapsulated
     private List<Contact> contactList = []; // Initializes an empty list using target-typed new for cleaner syntax
-    public AddressBook(string filePath)
+    public AddressBook(string filePath) //Constructor that takes a file path as a parameter and sets it in FileRepository.cs
     {
         FileRepository.SetFilePath(filePath);
     }
