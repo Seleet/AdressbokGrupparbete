@@ -16,8 +16,7 @@ class AddressBook
 {
 
     private readonly MenuOption[] options = Enum.GetValues<MenuOption>(); //Private read only encapsulated
-    private List<Contact> contactList = [];
-
+    private List<Contact> contactList = []; // Initializes an empty list using target-typed new for cleaner syntax
     public AddressBook(string filePath)
     {
         FileRepository.SetFilePath(filePath);
