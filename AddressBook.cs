@@ -1,5 +1,13 @@
 
-public enum MenuOption //Enum for menu options
+/// <summary>
+/// Defines all available menu options in the AddressBook application.
+/// </summary>
+/// <remarks>
+/// Using an enum instead of a hardcoded array provides type safety,
+/// clearer logic, and automatic synchronization between the code and the menu
+/// whenever new options are added.
+/// </remarks>
+public enum MenuOption
 {
     List = 1,
     Create,
