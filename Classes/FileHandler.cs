@@ -12,7 +12,7 @@ static class FileHandler
         List<Contact> list = new();
         try
         {
-            if (!File.Exists(fileName)) //Creates a new file if the file path can´t be found, Elise
+            if (!File.Exists(fileName)) //Creates a new file if the file path can´t be found
             {
                 using (FileStream fs = File.Create(fileName))
                 {

@@ -33,7 +33,7 @@ static class ContactHandlers
 
     static public void CreateContact(List<Contact> contactList) //Creates the contact list 
     {
-        long ID = DateTimeOffset.UtcNow.ToUnixTimeSeconds(); //Log in ID based on the current time
+        long ID = DateTimeOffset.UtcNow.ToUnixTimeSeconds(); // ID based on the current time
         string name = Helpers.PromptStringQuestion("Enter name: ");
         string street = Helpers.PromptStringQuestion("Enter street: ");
         string zipCode = Helpers.PromptStringQuestion("Enter zip code: ");
@@ -143,7 +143,7 @@ static class ContactHandlers
         return c;
     }
 
-    static void ContactSummary(Contact contact) //The responsibility of writing out the content lies in the class (More object oriented), Elise
+    static void ContactSummary(Contact contact) //The responsibility of writing out the content lies in the class (More object oriented)
     {
         Console.ForegroundColor = ConsoleColor.Yellow;
         Console.WriteLine(contact);
