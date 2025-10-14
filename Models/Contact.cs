@@ -1,6 +1,6 @@
 class Contact
 {
-   
+
     // --- Properties (data fields) ---
     public string FirstName { get; set; } = "";      // First name of the person
     public string LastName { get; set; } = "";       // Last name of the person
@@ -12,7 +12,7 @@ class Contact
     public long ID { get; private set; }
 
     public Contact(long _num, string _firstname, string _lastname, string _street, string _zipCode, string _city,
-    string _phone, string _email)
+    string _phone, string _email) // Constructor
     {
         ID = _num;
         FirstName = _firstname;
