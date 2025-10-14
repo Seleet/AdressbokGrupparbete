@@ -17,7 +17,8 @@ class AddressBook
 
 {
 
-    private readonly MenuOption[] options = Enum.GetValues<MenuOption>(); //Private read only encapsulated
+    private readonly MenuOption[] options = Enum.GetValues<MenuOption>(); // Dynamically retrieves all MenuOption values to keep the menu in sync with the enum definition.
+
     private List<Contact> contactList = []; // Initializes an empty list using target-typed new for cleaner syntax
     public AddressBook(string filePath) //Constructor that takes a file path as a parameter and sets it in FileRepository.cs
     {
