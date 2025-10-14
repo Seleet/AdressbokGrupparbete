@@ -1,7 +1,3 @@
-/// <summary>
-/// Represents the main AddressBook application.
-/// Handles the program flow, main menu, and links user choices to the correct contact operations.
-/// </summary>
 
 public enum MenuOption //Enum for menu options
 {
@@ -12,8 +8,13 @@ public enum MenuOption //Enum for menu options
     Find,
     Close
 }
-
+/// <summary>
+/// Represents the main AddressBook application.
+/// Handles the program flow, main menu, and links user choices to the correct contact operations.
+/// </summary>
 class AddressBook
+
+
 {
 
     private readonly MenuOption[] options = Enum.GetValues<MenuOption>(); //Private read only encapsulated
@@ -23,6 +24,12 @@ class AddressBook
         FileRepository.SetFilePath(filePath);
     }
 
+    /// <summary>
+    /// Runs the AddressBook application by displaying the main menu and handling user input.
+    /// </summary>
+    /// <remarks>
+    /// This method keeps running until the user chooses to exit.
+    /// </remarks>
     public void RunAddressBookApp() //This Is the method that starts the Program
     {
 
