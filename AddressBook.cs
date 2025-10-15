@@ -44,7 +44,6 @@ class AddressBook
 
         BootSim(true); //BootSim writes Welcoming "booting" with slow threadsleep
 
-
         var (ok, list) = FileRepository.ReadContacts(); //Tries to read the file and returns a tuple with a boolean and a list of contacts.
         contactList = ok ? list : new List<Contact>(); //If it fails, it creates an empty list of contacts.
 
@@ -54,6 +53,7 @@ class AddressBook
             int choice = MainMenu(); //Starts the main menu and gets user choice.
             openAddressBook = HandleMenuChoice(choice); //Handles the user choice and returns false if user chose to close the app.
         }
+
         BootSim(false);
     }
 

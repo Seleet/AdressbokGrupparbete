@@ -173,11 +173,22 @@ static class ContactService
 
     static void DisplayAllContacts(List<Contact> contactList) // Displays all contacts in the list
     {
-        foreach (var c in contactList)
+        if (contactList.Count > 0)
         {
-            PrintContact(c);
+            foreach (var c in contactList)
+            {
+                PrintContact(c);
+            }
+        }
+        else
+        {
+            Console.WriteLine("\n──────────────────────────────────────────────");
+            Console.WriteLine("no current contacts.");
+            Console.WriteLine("──────────────────────────────────────────────\n");
         }
     }
+
+
 
     static void ConfirmAction(string txt)
     {
