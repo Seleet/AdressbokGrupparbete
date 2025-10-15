@@ -42,7 +42,7 @@ class AddressBook
     public void RunAddressBookApp() //This Is the method that starts the Program
     {
 
-        OpenCloseApp(true); //OpenCloseApp writes Welcoming "booting" with slow threadsleep
+        BootSim(true); //BootSim writes Welcoming "booting" with slow threadsleep
 
 
         var (ok, list) = FileRepository.ReadContacts(); //Tries to read the file and returns a tuple with a boolean and a list of contacts.
@@ -54,7 +54,7 @@ class AddressBook
             int choice = MainMenu(); //Starts the main menu and gets user choice.
             openAddressBook = HandleMenuChoice(choice); //Handles the user choice and returns false if user chose to close the app.
         }
-        OpenCloseApp(false);
+        BootSim(false);
     }
 
 
@@ -102,7 +102,7 @@ class AddressBook
 
     }
 
-    void OpenCloseApp(bool open) //Writes Welcoming "booting" with slow threadsleep and "turning off" when closing the app.
+    void BootSim(bool open) //Writes Welcoming "booting" with slow threadsleep and "turning off" when closing the app.
     {
         string msg = open ? "Booting...\n" : "\nTurning off...\n";
         Console.ForegroundColor = open ? ConsoleColor.Green : ConsoleColor.Yellow;
